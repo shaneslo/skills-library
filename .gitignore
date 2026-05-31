@@ -1,0 +1,27 @@
+# Generated output. Re-creatable with `python build/build.py`.
+# Force-add the built file (git add -f dist/skills-library.html) if you want to version a release.
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Secrets and local environment
+.env
+.env.local
+*.local

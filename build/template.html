@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills Library — Tax-Ops AI</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#171d26; --panel2:#1e2630; --ink:#e6edf3;
+    --muted:#8b98a5; --line:#2a3340; --accent:#4a9eff; --accent-dim:#27456e;
+    --good:#3fb950; --warn:#d29922; --tag:#30363d; --gap:#3a2a12; --gap-line:#7a5a1f;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font:15px/1.6 var(--sans);background:var(--bg);color:var(--ink);
+    padding:32px 24px 80px;max-width:1080px;margin:0 auto;-webkit-font-smoothing:antialiased}
+
+  header{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
+  h1{font-size:21px;font-weight:650;letter-spacing:-.015em}
+  .sub{color:var(--muted);font-size:13px;margin-top:5px}
+
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:6px 18px;margin-bottom:20px}
+  .intro summary{cursor:pointer;list-style:none;padding:12px 0;font-size:13px;
+    font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .intro summary::-webkit-details-marker{display:none}
+  .intro summary::before{content:"▸ ";color:var(--accent)}
+  .intro[open] summary::before{content:"▾ "}
+  .intro ol{margin:6px 0 16px 20px;color:var(--ink)}
+  .intro li{margin:6px 0}
+  .intro p{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+
+  .controls{position:sticky;top:0;background:var(--bg);padding:14px 0 16px;z-index:5;
+    border-bottom:1px solid var(--line);margin-bottom:22px}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+  .row:last-child{margin-bottom:0}
+  .label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
+    width:62px;flex:0 0 auto}
+  .filter{background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    border-radius:20px;padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;
+    transition:border-color .12s,background .12s}
+  .filter:hover{border-color:var(--accent-dim)}
+  .filter.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+  #search{flex:1;min-width:200px;background:var(--panel2);color:var(--ink);
+    border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13.5px;
+    font-family:inherit}
+  #search:focus{outline:none;border-color:var(--accent)}
+  #count{font-size:12px;color:var(--muted);margin-left:auto}
+
+  .stage-group{margin-bottom:30px}
+  .stage-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--accent);margin:0 0 12px;font-weight:650}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    margin-bottom:12px;overflow:hidden}
+  .card[open]{border-color:var(--accent-dim)}
+  .card>summary{cursor:pointer;list-style:none;padding:15px 18px}
+  .card>summary::-webkit-details-marker{display:none}
+  .summary-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .name{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .card>summary::after{content:"+";color:var(--muted);font-size:18px;line-height:1;
+    float:right;margin-top:-22px}
+  .card[open]>summary::after{content:"–"}
+  .tags{flex:0 0 auto;display:flex;gap:5px;flex-wrap:wrap;margin-right:18px}
+  .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;
+    background:var(--tag);color:var(--ink);padding:3px 8px;border-radius:5px;white-space:nowrap}
+  .t-type{background:#243447;color:#9fc4ef}
+  .t-stage{background:#22332a;color:#8fcf9f}
+  .tier-1{background:#3a2530;color:#f0a0c0}
+  .tier-2{background:#2f2a3a;color:#c0a8f0}
+  .tier-3{background:#2a3340;color:#a8c4e8}
+  .tier-4{background:#30363d;color:#b0bac4}
+  .core{color:var(--ink);font-size:14px;margin-top:9px;max-width:80ch}
+  .adapt{color:var(--muted);font-size:12px;margin-top:6px;font-variant:small-caps;letter-spacing:.03em}
+
+  .body-area{padding:4px 18px 18px;border-top:1px solid var(--line)}
+  .copywrap{position:relative;margin:14px 0}
+  pre.body{background:#0b0f14;border:1px solid var(--line);border-radius:8px;
+    padding:16px 16px 16px;font:13px/1.6 var(--mono);color:#d6e2ee;
+    white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+  .copy{position:absolute;top:9px;right:9px;background:var(--panel2);color:var(--ink);
+    border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12px;
+    cursor:pointer;font-family:inherit;transition:border-color .12s,color .12s}
+  .copy:hover{border-color:var(--accent);color:#fff}
+  .copy.ok{border-color:var(--good);color:var(--good)}
+  .copy-all{position:static;display:inline-block;margin:4px 0 6px}
+
+  .field{margin:16px 0}
+  .field h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);margin-bottom:6px;font-weight:650}
+  .field p{color:var(--ink);font-size:14px}
+  .field.gap{background:var(--gap);border-left:3px solid var(--gap-line);
+    border-radius:0 8px 8px 0;padding:12px 14px}
+  .field.gap h4{color:#e0b870}
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;
+    border-top:1px solid var(--line);padding-top:14px;margin-top:16px}
+  @media(max-width:640px){.meta{grid-template-columns:1fr}}
+
+  .workflow>summary{border-left:3px solid var(--accent)}
+  ol.steps{list-style:none;counter-reset:none;margin:8px 0}
+  .step{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px;
+    background:var(--panel2)}
+  .step-head{display:flex;gap:10px;align-items:center;margin-bottom:4px}
+  .step-n{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);
+    color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .step-title{font-weight:600;font-size:14px}
+  .ref{color:var(--muted);font-weight:400;font-size:12px}
+  .step-out{color:var(--muted);font-size:12.5px;margin-top:6px}
+  .gates{background:#2a1f1f;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
+    padding:12px 14px}
+  .gates h4{color:#e0b870}
+  .gates ul{margin-left:18px}
+  .gates li{margin:4px 0;font-size:13.5px}
+
+  .empty{color:var(--muted);text-align:center;padding:40px;font-size:14px}
+  footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);
+    padding-top:16px}
+  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font:12.5px var(--mono)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Skills Library</h1>
+  <div class="sub">Prime brokerage tax-operations AI assets. Copy any prompt, paste it into the assistant you have. Runs offline.</div>
+</header>
+
+<details class="intro">
+  <summary>How to adapt an asset</summary>
+  <p>The question is never which tools we have, but what exists that works. Run every asset through three tests before you trust it.</p>
+  <ol>
+    <li><strong>Understand it.</strong> Read the prompt. If the procedure is not legible to you, it is not ready.</li>
+    <li><strong>Decompose it.</strong> Strip it to its core function, the part that holds no tool. If you cannot rebuild that core from scratch, you do not own it yet.</li>
+    <li><strong>Adapt it.</strong> Pour in the domain knowledge the source could not have: the break-cause taxonomy, the remediation routing rules, the income-type to tax-form mapping. The domain-gap note on each card states what to supply.</li>
+  </ol>
+  <p>Treat credible repos as specifications, not software. Harvest the decomposition, drop the code that will not run, re-express the rest as prompts.</p>
+</details>
+
+<div class="controls">
+  <div class="row">
+    <span class="label">Stage</span>
+    <button class="filter active" data-stage="all">All</button>
+    <button class="filter" data-stage="intake-classify">Intake / classify</button>
+    <button class="filter" data-stage="research">Research</button>
+    <button class="filter" data-stage="remediate">Remediate</button>
+    <button class="filter" data-stage="communicate">Communicate</button>
+  </div>
+  <div class="row">
+    <span class="label">Tier</span>
+    <button class="filter active" data-tier="all">All</button>
+    <button class="filter" data-tier="1">Tier 1</button>
+    <button class="filter" data-tier="2">Tier 2</button>
+    <button class="filter" data-tier="3">Tier 3</button>
+    <button class="filter" data-tier="4">Tier 4</button>
+  </div>
+  <div class="row">
+    <input id="search" type="text" placeholder="Search names and core functions" autocomplete="off">
+    <span id="count"></span>
+  </div>
+</div>
+
+<main id="library">
+<!--ENTRIES-->
+</main>
+
+<p class="empty" id="empty" hidden>No assets match the current filters.</p>
+
+<footer>
+  <!--COUNT--> assets. Built from <code>content/entries/</code> by <code>build/build.py</code>. Edit content and re-run <code>/build</code> to refresh.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Copy raw prompt text to the clipboard. Falls back to selecting the text
+  // when the clipboard API is blocked, which happens on locked-down machines.
+  function flash(btn, msg){
+    var prev = btn.textContent;
+    btn.textContent = msg;
+    btn.classList.add("ok");
+    setTimeout(function(){ btn.textContent = prev; btn.classList.remove("ok"); }, 1400);
+  }
+
+  function selectNode(node){
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  function legacyCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "absolute";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function doCopy(text, btn, fallbackNode){
+    // Copy exact text. No transform, no smart-quote substitution.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ flash(btn, "Copied"); },
+        function(){ if (legacyCopy(text)) { flash(btn, "Copied"); }
+                    else { if (fallbackNode) selectNode(fallbackNode); flash(btn, "Select and copy"); } }
+      );
+      return;
+    }
+    if (legacyCopy(text)) { flash(btn, "Copied"); return; }
+    if (fallbackNode) selectNode(fallbackNode);
+    flash(btn, "Select and copy");
+  }
+
+  document.addEventListener("click", function(ev){
+    var btn = ev.target.closest(".copy");
+    if (!btn) return;
+    var kind = btn.getAttribute("data-copy");
+    if (kind === "workflow") {
+      var card = btn.closest(".workflow");
+      var pres = card ? card.querySelectorAll("pre.body") : [];
+      var chunks = [];
+      pres.forEach(function(p, i){ chunks.push("Step " + (i + 1) + "\n" + p.textContent); });
+      doCopy(chunks.join("\n\n"), btn, pres[0]);
+    } else {
+      var wrap = btn.closest(".copywrap");
+      var pre = wrap ? wrap.querySelector("pre.body") : null;
+      if (pre) doCopy(pre.textContent, btn, pre);
+    }
+  });
+
+  // Filtering by stage, tier, and free text. All three combine.
+  var state = { stage: "all", tier: "all", q: "" };
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+  var groups = Array.prototype.slice.call(document.querySelectorAll(".stage-group"));
+  var countEl = document.getElementById("count");
+  var emptyEl = document.getElementById("empty");
+
+  function apply(){
+    var shown = 0;
+    cards.forEach(function(c){
+      var okStage = state.stage === "all" || c.getAttribute("data-stage") === state.stage;
+      var okTier = state.tier === "all" || c.getAttribute("data-tier") === state.tier;
+      var okQ = state.q === "" || (c.getAttribute("data-search") || "").indexOf(state.q) !== -1;
+      var show = okStage && okTier && okQ;
+      c.style.display = show ? "" : "none";
+      if (show) shown++;
+    });
+    groups.forEach(function(g){
+      var any = g.querySelector('.card:not([style*="display: none"])');
+      g.style.display = any ? "" : "none";
+    });
+    countEl.textContent = shown + (shown === 1 ? " asset" : " assets");
+    emptyEl.hidden = shown !== 0;
+  }
+
+  document.querySelectorAll(".filter[data-stage]").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.stage = b.getAttribute("data-stage");
+      document.querySelectorAll(".filter[data-stage]").forEach(function(x){ x.classList.remove("active"); });
+      b.classList.add("active");
+      apply();
+    });
+  });
+  document.querySelectorAll(".filter[data-tier]").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.tier = b.getAttribute("data-tier");
+      document.querySelectorAll(".filter[data-tier]").forEach(function(x){ x.classList.remove("active"); });
+      b.classList.add("active");
+      apply();
+    });
+  });
+  document.getElementById("search").addEventListener("input", function(e){
+    state.q = e.target.value.trim().toLowerCase();
+    apply();
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>
