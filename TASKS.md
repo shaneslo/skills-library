@@ -12,6 +12,12 @@
 - [ ] **Group input on which skill to pilot first** - since since 05-31-2026
 - [ ] **Evaluator agent feedback on the spec** - since 05-31-2026
 
+## Review follow-ups (from 05-31-2026 repo review, design calls)
+
+- [ ] **Decide workflow stage handling** - a stage-less workflow renders `data-stage="workflow"`, which no filter button selects. Give workflows a real stage or add a "workflow" filter control
+- [ ] **Resolve the research-inventory criterion** - spec criterion 8 ties `tier` to an inventory that is not a checked-in file. Commit the inventory or drop the criterion
+- [ ] **Decide the exemplar's terminal form** - ship a fully-assembled sibling entry with `[INSERT: …]` gaps filled, or document open brackets as the intended end state
+
 ## Someday
 
 - [ ] **Add tool-specific execution notes per asset** - GS internal assistant, Copilot, then Claude when provisioned
@@ -23,3 +29,4 @@
 - [x] ~~Run deep research and build the credibility-tier-ranked inventory~~ (05-31-2026)
 - [x] ~~Establish the core value-generation principle (specs not software; three tests)~~ (05-31-2026)
 - [x] ~~Decide to split build and strategy into separate chats for context optimization~~ (05-31-2026)
+- [x] ~~Multi-agent repo review with evaluator checkpoint; fix the verified findings~~ (05-31-2026)
