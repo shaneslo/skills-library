@@ -130,7 +130,13 @@ def validate_entries(entries):
                 errors.append((f, "id", "duplicate id, also used by " + seen_ids[eid]))
             seen_ids[eid] = f
 
-        if e.get("tier") not in TIERS:
+        # Accept an int or a string that names an int, matching the renderer,
+        # which coerces with int(). A quoted tier in YAML must not be a hard fail.
+        try:
+            tier_ok = int(e.get("tier")) in TIERS
+        except (TypeError, ValueError):
+            tier_ok = False
+        if not tier_ok:
             errors.append((f, "tier", "must be an integer 1 to 4"))
 
         # Asset-specific rules.
@@ -145,7 +151,8 @@ def validate_entries(entries):
 
             cf = str(e.get("core_function", "")).lower()
             for tok in TOOL_TOKENS:
-                if re.search(r"\b" + re.escape(tok) + r"\b", cf):
+                # Trailing s? catches plurals so "calls external APIs" still trips.
+                if re.search(r"\b" + re.escape(tok) + r"s?\b", cf):
                     errors.append((f, "core_function", "names a tool ('%s'); not decomposed" % tok))
 
             gap = str(e.get("domain_gap", "")).strip()
@@ -160,8 +167,12 @@ def validate_entries(entries):
                 errors.append((f, "steps", "workflow needs an ordered list of steps"))
             has_remediation = False
             for s in steps if isinstance(steps, list) else []:
-                blob = (str(s.get("title", "")) + " " + str(s.get("prompt", ""))).lower()
-                if any(re.search(r"\b" + w + r"\b", blob) for w in REMEDIATION_WORDS):
+                # Scan title, prompt, and output. Remediation described only in a
+                # step's output must still demand a gate.
+                blob = " ".join(
+                    str(s.get(k, "")) for k in ("title", "prompt", "output")
+                ).lower()
+                if any(re.search(r"\b" + re.escape(w) + r"\b", blob) for w in REMEDIATION_WORDS):
                     has_remediation = True
             if has_remediation and not gates:
                 errors.append((f, "gates", "workflow has a remediation step but no human-sign-off gate"))
@@ -326,13 +337,15 @@ def render_entries(entries):
     return "\n".join(blocks)
 
 
+# The (?:https?:)?// prefix catches both absolute (https://cdn) and
+# protocol-relative (//cdn) external references.
 OFFLINE_PATTERNS = [
-    (r'src\s*=\s*["\']?\s*https?:', "external src attribute"),
-    (r'href\s*=\s*["\']?\s*https?:', "external href attribute"),
+    (r'src\s*=\s*["\']?\s*(?:https?:)?//', "external src attribute"),
+    (r'href\s*=\s*["\']?\s*(?:https?:)?//', "external href attribute"),
     (r'<link\b', "link element"),
     (r'<script\b[^>]*\bsrc\s*=', "external script element"),
     (r'@import\b', "css @import"),
-    (r'url\(\s*["\']?\s*https?:', "css url() to a remote resource"),
+    (r'url\(\s*["\']?\s*(?:https?:)?//', "css url() to a remote resource"),
 ]
 
 
