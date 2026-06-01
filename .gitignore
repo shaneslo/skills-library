@@ -22,6 +22,11 @@ Thumbs.db
 *~
 
 # Secrets and local environment
-.env
-.env.local
+.env*
 *.local
+credentials.json
+token.json
+oauth_creds.json
+client_secret*.json
+.ssh/
+.mcp-auth/
