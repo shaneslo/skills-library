@@ -32,6 +32,7 @@ Break: a reconciliation discrepancy to research and resolve. Tie-out: reconcile 
 - `.claude/skills/tax-ops-domain.md` — break taxonomy, routing rules, tax-form mappings, three-test framework. Load it when authoring or adapting an entry.
 - `.claude/skills/build-pipeline.md` — how to validate and build.
 - `SKILLS_LIBRARY_SPEC.md` — the contract. Section 8 is the quality bar.
+- `memory/` — operator context, the cold store this file defers to. `memory/README.md` defines the layer and its boundary with the build. `memory/glossary.md` holds full term definitions, `memory/company.md` the environment, `memory/projects/skills-library.md` this repo's dossier. None of it compiles into `dist/`.
 
 ## Build commands
 - `/validate` — check every entry against the schema and the four hard rules. No build.

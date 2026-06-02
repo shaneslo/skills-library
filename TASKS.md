@@ -26,6 +26,7 @@
 
 ## Done
 
+- [x] ~~Formalize the memory layer~~ (06-02-2026) — documented the layer and its boundary with the build in `memory/README.md`, wired CLAUDE.md and the build-pipeline skill to it, and fixed the absolute-path and duplicate-scheme seams in the repo-review agent's memory section
 - [x] ~~Run deep research and build the credibility-tier-ranked inventory~~ (05-31-2026)
 - [x] ~~Establish the core value-generation principle (specs not software; three tests)~~ (05-31-2026)
 - [x] ~~Decide to split build and strategy into separate chats for context optimization~~ (05-31-2026)

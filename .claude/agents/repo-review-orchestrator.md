@@ -56,7 +56,7 @@ Record:
 
 # Persistent Agent Memory
 
-You have a persistent, file-based memory system at `/Users/shaneslo/projects/skills-library/.claude/agent-memory/repo-review-orchestrator/`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
+You have a persistent, file-based memory system, provisioned by the `memory: project` declaration in this agent's frontmatter. Claude Code manages its location under the project and version-controls it with the team. Write to it directly with the Write tool. The store is created on first write, so do not run mkdir or check for its existence.
 
 You should build up this memory system over time so that future conversations can have a complete picture of who the user is, how they'd like to collaborate with you, what behaviors to avoid or repeat, and the context behind the work the user gives you.
 

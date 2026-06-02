@@ -16,12 +16,23 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   `https?:`. A protocol-relative external src, href, or `url()` is now flagged.
 - `.gitignore`: secret coverage widened to `.env*`, `credentials.json`,
   `token.json`, `oauth_creds.json`, `client_secret*.json`, `.ssh/`, `.mcp-auth/`.
+- Memory layer: hardcoded absolute paths made portable. The repo-review agent's
+  persistent-memory section dropped `/Users/shaneslo/...agent-memory/...` and now
+  defers to the `memory: project` managed store, created on first write, removing
+  the false "this directory already exists" claim. `memory/projects/skills-library.md`
+  no longer pins the repo to an absolute path.
 
 ### Added
 - `tests/test_validate.py`: contract tests for `validate_entries`, one per rule,
   with regression cases for each fix above. Run with `python -m pytest`.
 - `requirements-dev.txt` and `requirements.txt` to pin the build and test deps.
 - Tracked `.claude/agents/repo-review-orchestrator.md` (was untracked).
+- `memory/README.md`: defines the memory layer, its boundary with the build
+  (`build/build.py` reads only `content/entries/`, never `memory/`), the
+  hot-cache/cold-store context model, the per-file roles, the `projects/`
+  convention, and how agent memory under `.claude/` differs. CLAUDE.md "Where
+  things live" and the build-pipeline skill now point at the layer, and a comment
+  at `CONTENT_DIR` in `build/build.py` records that memory never compiles.
 
 ### Known, deferred to a design decision
 - Workflow stage filtering: a workflow with no `stage` renders with
