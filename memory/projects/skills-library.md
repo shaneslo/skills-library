@@ -10,7 +10,7 @@ Decouple AI capability from tool procurement. Capture working patterns as tool-a
 Built. The project is now a Claude Code repo. The single hand-authored HTML file is gone; the repo compiles the output instead. v1 ships the scaffold, the build pipeline, and one fully worked exemplar entry (gl-reconciler-break-triage). The pipeline runs clean end to end: validate passes, build compiles, the offline check finds no external references.
 
 ## Repo
-Lives at `/Users/shaneslo/projects/skills-library/`, initialized from `gs_projectfiles`. Shape:
+The repo root, initialized from `gs_projectfiles`. Shape:
 - `content/entries/*.yaml`: one asset per file, the value layer.
 - `build/build.py`: validates content and compiles the HTML.
 - `build/template.html`: the offline shell, no external dependencies.

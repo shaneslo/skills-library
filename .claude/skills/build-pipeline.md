@@ -7,6 +7,8 @@ description: How to validate content and build the offline Skills Library HTML. 
 
 Content and presentation are separate. Author the content as YAML, run one script, get one self-contained HTML file. The model spends its output budget on the asset bodies, and a loop in the script generates the repetitive markup for free. A one-line fix to a single asset means editing one small file and re-running. The template is never re-emitted by hand.
 
+The build reads `content/entries/` and nothing else. `memory/` is operator context that feeds the assistant, never the output; see `memory/README.md` for the boundary. Do not point the build at it.
+
 ## The three layers
 
 1. **Content.** `content/entries/*.yaml`, one asset per file. Each file carries the schema fields. The prompt body and the prose notes are the value; everything else is metadata.

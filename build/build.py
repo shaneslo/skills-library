@@ -22,6 +22,7 @@ import markdown
 
 # Paths are resolved from the repo root, the parent of this file's directory.
 ROOT = Path(__file__).resolve().parent.parent
+# The build reads only content/entries. memory/ is operator context, never compiled.
 CONTENT_DIR = ROOT / "content" / "entries"
 TEMPLATE = ROOT / "build" / "template.html"
 OUTPUT = ROOT / "dist" / "skills-library.html"
