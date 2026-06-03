@@ -34,16 +34,21 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   things live" and the build-pipeline skill now point at the layer, and a comment
   at `CONTENT_DIR` in `build/build.py` records that memory never compiles.
 
-### Known, deferred to a design decision
-- Workflow stage filtering: a workflow with no `stage` renders with
-  `data-stage="workflow"`, a value no filter button selects. It stays visible
-  under "All" and tier filters, grouped under "cross-stage workflows". Decide
-  whether workflows get a real stage or the filter gains a "workflow" control.
-- Spec criterion 8 ties `tier` to a "research inventory" that is not a checked-in
-  file. Either commit the inventory or drop the criterion.
-- The exemplar entry names its `[INSERT: …]` gaps but never fills one. Decide
-  whether to ship a fully-assembled sibling or to document open brackets as the
-  intended terminal state.
+### Decided (resolves the three 2026-05-31 design calls)
+- Workflow stage handling: resolved on `main` by PR #9, which made `stage` a
+  required field for every entry and added a Type-axis filter carrying a
+  "Workflows" control (`data-type="workflow"`). That surfaces all workflow
+  assets regardless of stage and removes the orphaned `data-stage="workflow"`
+  value the review flagged. No template change ships in this changelog entry.
+- Spec criterion 8 no longer ties `tier` to an uncommitted "research inventory".
+  Tier is an integer 1 to 4 set from source provenance, with the rationale
+  carried in each entry's `source` and `maturity` fields. The deep-research
+  inventory is a research-phase artifact, not a build input. (`SKILLS_LIBRARY_SPEC.md`)
+- Exemplar terminal form: bracketed `[INSERT: …]` placeholders are the intended
+  terminal state for `adapt` and `author-from-spec` entries, not an incomplete
+  one. They mark the adaptation surface where firm-specific domain knowledge is
+  supplied at use time. The spec's acceptance criteria now state this, so open
+  inserts pass rather than read as unfinished. (`SKILLS_LIBRARY_SPEC.md`)
 
 ## [0.1.0] - 2026-05-31
 

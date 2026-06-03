@@ -51,7 +51,7 @@ Every non-workflow asset carries these fields. Required unless marked optional.
 | `name` | Human-readable title |
 | `type` | One of: prompt, skill, agent, workflow |
 | `stage` | Workflow stage: intake-classify, research, remediate, communicate |
-| `tier` | Credibility tier 1 to 4, from the research inventory |
+| `tier` | Credibility tier 1 to 4, set from source provenance: first-party standing, fork and star count, and release recency, all captured in the entry's `source` and `maturity` fields |
 | `source` | Origin name plus link |
 | `core_function` | One sentence: the decomposed core, stripped of tooling (test 2) |
 | `domain_fit` | Which domain priority it serves and how directly |
@@ -167,9 +167,11 @@ The evaluator should treat each as pass or fail.
 5. The output file runs offline from `file://` with no external dependency.
 6. Copy buttons yield clean plain text with no markup or smart-quote corruption.
 7. Content and presentation are separable; entries are editable without touching the template.
-8. Tier tags are present and match the research inventory.
+8. Tier tags are present and are an integer 1 to 4. The tier reflects source credibility, with the rationale carried in each entry's `source` and `maturity` fields. The deep-research inventory that informed the first tiers is a research-phase artifact, not a build input, so no external file is required to verify this.
 9. Primary navigation is by workflow stage; tier is a tag, not the axis.
 10. At least one entry meets the depth of the section 8 exemplar, and the rest match its shape.
+
+Bracketed `[INSERT: …]` placeholders in an `adapt` or `author-from-spec` entry are the intended terminal form, not an incomplete state. They mark the adaptation surface where firm-specific domain knowledge gets supplied at use time, drawn from `.claude/skills/tax-ops-domain.md`. An entry with open inserts passes criterion 1 and 10; the inserts are the asset, and the `domain_gap` note names what fills them.
 
 ---
 
