@@ -9,6 +9,8 @@ Decouple AI capability from tool procurement. Capture working patterns as tool-a
 ## Status (current)
 Built. The project is now a Claude Code repo. The single hand-authored HTML file is gone; the repo compiles the output instead. v1 ships the scaffold, the build pipeline, one fully worked exemplar entry, a Data Analytics seed pack, and a wider operations pack for Gainskeeper exception research, gain and loss tie-outs, email intake, status replies, KB review, tracker maintenance, and work-item routing. The pipeline runs clean end to end: validate passes, tests pass, build compiles, and the offline check finds no external references.
 
+The frontend redesign shipped in PR #9 (merged 2026-06-03): a light square-card library grouped by stage, a Type filter, native `<dialog>` detail views, an offline scan widened to catch browser-storage APIs and scoped away from entry prose, and a stage-count summary. The 14-entry pack is in place. Reviewed against the issue #8 plan with validate, 20 tests, build, and offline check all clean. The next frontend step is the Track B workflow map; see Open items. The build plan and its review live in issue #8.
+
 ## Repo
 The repo root, initialized from `gs_projectfiles`. Shape:
 - `content/entries/*.yaml`: one asset per file, the value layer.
@@ -25,9 +27,11 @@ The repo root, initialized from `gs_projectfiles`. Shape:
 Three layers: content (YAML), template (HTML, written once), build (a Python loop that injects content into the template). Output tokens go to asset bodies; the script generates the repetitive markup. Edit one small YAML file and re-run. The template is never re-emitted by hand.
 
 ## What the build enforces
-Four hard rules, all script-checked: every required schema field present per type; `core_function` names no tool; `domain_gap` present and substantive for every finance asset; any workflow with a remediation step carries a human-sign-off gate. An offline check aborts the build if the output references anything external. Navigation is by workflow stage (intake-classify, research, remediate, communicate). Tier 1 to 4 is a tag and a filter, not the grouping axis.
+Four hard rules, all script-checked: every required schema field present per type; `core_function` names no tool; `domain_gap` present and substantive for every finance asset; any workflow with a remediation step carries a human-sign-off gate. An offline check aborts the build if the output references anything external, and a browser-storage scan (localStorage, sessionStorage, indexedDB, document.cookie) runs over the executable chrome only, so prompt prose that names those tokens does not trip it. Navigation is by workflow stage (intake-classify, research, remediate, communicate), with a Type filter that isolates prompts, skills, agents, and workflows. Workflows keep their starting stage, and `stage` is now required for every type, which resolved issue #2. Tier 1 to 4 is a tag and a filter, not the grouping axis.
 
 ## Open items
+- Prototype the Track B workflow map (issue #8): inline SVG or a small inline script drawn from the workflow YAML for v2, starting with `tax-break-diagnostic-workflow`; React Flow deferred to v3 behind the offline and storage scan over every emitted file. Add `docs/react-flow-pro-license-note.md` before any Pro-informed code.
+- Frontend polish from the #9 review: cards use `min-height` rather than `aspect-ratio: 1/1` and the grid packs more than three columns at 1280px; the `<dialog>` has no `aria-labelledby` to the title and the copy status is not in an `aria-live` region; the validator does not constrain a workflow `stage` to the four stages, so a typo would render it in no group.
 - Review the 14-entry pack for desk fit. Confirm whether the asset names, fields, and issue types match the real Gainskeeper operating cadence.
 - Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the taxonomy, routing rules, and form mappings directly.
 - Reconstruct or commit the missing research inventory if tier tags need audit support beyond the source notes in each entry.
