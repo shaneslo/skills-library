@@ -21,6 +21,11 @@ Thumbs.db
 *.swp
 *~
 
+# Local agent scaffolding
+.agents/
+.codex/
+AGENTS.md
+
 # Secrets and local environment
 .env*
 *.local
