@@ -7,7 +7,7 @@ A curated, credibility-tier-ranked, copy-and-adapt repository of AI assets (prom
 Decouple AI capability from tool procurement. Capture working patterns as tool-agnostic content now, and upgrade the execution layer (GS assistant, Copilot, Claude) over time without rewriting content.
 
 ## Status (current)
-Built. The project is now a Claude Code repo. The single hand-authored HTML file is gone; the repo compiles the output instead. v1 ships the scaffold, the build pipeline, and one fully worked exemplar entry (gl-reconciler-break-triage). The pipeline runs clean end to end: validate passes, build compiles, the offline check finds no external references.
+Built. The project is now a Claude Code repo. The single hand-authored HTML file is gone; the repo compiles the output instead. v1 ships the scaffold, the build pipeline, one fully worked exemplar entry, a Data Analytics seed pack, and a wider operations pack for Gainskeeper exception research, gain and loss tie-outs, email intake, status replies, KB review, tracker maintenance, and work-item routing. The pipeline runs clean end to end: validate passes, tests pass, build compiles, and the offline check finds no external references.
 
 ## Repo
 The repo root, initialized from `gs_projectfiles`. Shape:
@@ -28,13 +28,16 @@ Three layers: content (YAML), template (HTML, written once), build (a Python loo
 Four hard rules, all script-checked: every required schema field present per type; `core_function` names no tool; `domain_gap` present and substantive for every finance asset; any workflow with a remediation step carries a human-sign-off gate. An offline check aborts the build if the output references anything external. Navigation is by workflow stage (intake-classify, research, remediate, communicate). Tier 1 to 4 is a tag and a filter, not the grouping axis.
 
 ## Open items
-- Run the init script. Confirm `python build/build.py --check` returns `PASS. 1 entries`, then build and open `dist/skills-library.html` offline.
-- Second entry is the real test of the section 8 bar. Pick one from the inventory, run `/new-entry`, and see whether the bar holds when the exemplar was not written to fit it.
+- Review the 14-entry pack for desk fit. Confirm whether the asset names, fields, and issue types match the real Gainskeeper operating cadence.
+- Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the taxonomy, routing rules, and form mappings directly.
+- Reconstruct or commit the missing research inventory if tier tags need audit support beyond the source notes in each entry.
 - Tax figures in `tax-ops-domain.md` (24% backup withholding, 30% NRA default, 1099-DIV box numbers, 1042-S income codes 06/01/51) are as of training. Confirm against current-year IRS instructions each filing season.
 - GL Reconciler maturity stats (roughly 29k stars, 4.1k forks, 2026-05-05 release) came from the research pass and were not re-verified. Spot-check before the library goes wider than you.
 
 ## Source material
 Research report artifact: credibility-tier-ranked inventory across four tiers (Anthropic financial-services repo, Microsoft 365 Copilot Finance, Atlassian Rovo, ServiceNow, wshobson/agents, OpenAI Academy, Nate B. Jones). Inventory holds names, one-liners, sources, fit notes. Most full runnable bodies must be authored, not copied.
+
+The checked-in project currently references that inventory only in this dossier. The itemized inventory file was not found in the repo during the 2026-06-03 initialization pass.
 
 ## Versioning roadmap
 - v1: tool-agnostic content. Runs on whatever assistant is in hand, including the GS internal assistant and Copilot.

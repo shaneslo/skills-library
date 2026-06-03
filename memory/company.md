@@ -3,6 +3,12 @@
 ## Team
 Finance operations supporting Goldman Sachs prime brokerage clients who need tax reporting operational work.
 
+## Current operating focus
+- Gainskeeper exception gain and loss work.
+- Break tracking, reconciliation, cost-basis research, and transaction analysis.
+- Manual-process improvement and AI adoption for a team that is not yet AI-native.
+- Practical help for email intake, status communication, tracker hygiene, document review, and repeatable research packets.
+
 ## Tools in hand
 - GS internal AI assistant: document upload, general reasoning.
 - Microsoft Copilot.

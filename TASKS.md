@@ -3,13 +3,14 @@
 ## Active
 
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
-- [ ] **Build the Skills Library artifact** - in a dedicated build chat within this project; self-contained offline HTML, one entry per skill/prompt/agent/workflow in expandable blocks with copy buttons
-- [ ] **Decide the v1 starting subset with the group** - which assets to author first; pick the highest-fit slice rather than all 40+
-- [ ] **Run the first chosen asset through the three tests** - understand / decompose / adapt; produce a worked template the rest follow
+- [ ] **Review the Data Analytics v1 pack for desk fit** - confirm which metrics, break cuts, and status-note shapes match the real operating cadence
+- [ ] **Review the Gainskeeper operations pack for desk fit** - confirm exception fields, gain/loss tie-out shape, email buckets, tracker statuses, and work-item priority rules
+- [ ] **Fill bracketed domain inserts into terminal-form variants** - decide whether v1 keeps reusable inserts or ships assembled sibling entries with taxonomy, routing, and form mappings embedded
+- [ ] **Decide the next source family to harvest** - likely GitHub agent patterns, financial-services examples, or document-review workflows
 
 ## Waiting On
 
-- [ ] **Group input on which skill to pilot first** - since since 05-31-2026
+- [ ] **Group input on which skill to pilot first after the Data Analytics seed** - since 06-03-2026
 - [ ] **Evaluator agent feedback on the spec** - since 05-31-2026
 
 ## Review follow-ups (from 05-31-2026 repo review, design calls)
@@ -26,7 +27,10 @@
 
 ## Done
 
-- [x] ~~Formalize the memory layer~~ (06-02-2026) — documented the layer and its boundary with the build in `memory/README.md`, wired CLAUDE.md and the build-pipeline skill to it, and fixed the absolute-path and duplicate-scheme seams in the repo-review agent's memory section
+- [x] ~~Initialize Data Analytics v1 pack~~ (06-03-2026) - added six tax-ops-adapted entries from the Data Analytics plugin: metric diagnostics, data quality profiling, break backlog KPI readout, dashboard brief, report writer, and an end-to-end diagnostic workflow
+- [x] ~~Initialize Gainskeeper operations pack~~ (06-03-2026) - added seven entries for exception research, gain/loss tie-out, email intake, field replies, KB review, break trackers, and work-item routing
+- [x] ~~Build the first Skills Library artifact~~ (06-03-2026) - generated `dist/skills-library.html` from seven entries; validation passed and the offline check was clean
+- [x] ~~Formalize the memory layer~~ (06-02-2026) - documented the layer and its boundary with the build in `memory/README.md`, wired CLAUDE.md and the build-pipeline skill to it, and fixed the absolute-path and duplicate-scheme seams in the repo-review agent's memory section
 - [x] ~~Run deep research and build the credibility-tier-ranked inventory~~ (05-31-2026)
 - [x] ~~Establish the core value-generation principle (specs not software; three tests)~~ (05-31-2026)
 - [x] ~~Decide to split build and strategy into separate chats for context optimization~~ (05-31-2026)

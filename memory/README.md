@@ -19,9 +19,9 @@ The split keeps the always-loaded file small while the full record stays one hop
 
 ## File roles
 
-- `company.md` — the team, the tools in hand, the constraints, and relevant external developments such as the GS/Anthropic partnership. The environment the work runs in.
-- `glossary.md` — the authoritative term definitions. CLAUDE.md carries the short forms and defers here for the full ones. Edit a definition here, not in CLAUDE.md.
-- `projects/<slug>.md` — one dossier per project: what it is, why, current status, repo shape, open items, roadmap. `projects/skills-library.md` is this repo's own dossier.
+- `company.md` - the team, the tools in hand, the constraints, and relevant external developments such as the GS/Anthropic partnership. The environment the work runs in.
+- `glossary.md` - the authoritative term definitions. CLAUDE.md carries the short forms and defers here for the full ones. Edit a definition here, not in CLAUDE.md.
+- `projects/<slug>.md` - one dossier per project: what it is, why, current status, repo shape, open items, roadmap. `projects/skills-library.md` is this repo's own dossier.
 
 ## The projects/ convention
 
