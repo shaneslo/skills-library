@@ -9,6 +9,8 @@ Decouple AI capability from tool procurement. Capture working patterns as tool-a
 ## Status (current)
 Built. The project is now a Claude Code repo. The single hand-authored HTML file is gone; the repo compiles the output instead. v1 ships the scaffold, the build pipeline, one fully worked exemplar entry, a Data Analytics seed pack, and a wider operations pack for Gainskeeper exception research, gain and loss tie-outs, email intake, status replies, KB review, tracker maintenance, and work-item routing. The pipeline runs clean end to end: validate passes, tests pass, build compiles, and the offline check finds no external references.
 
+A v2 frontend build plan is open as GitHub issue #8: a light square-card redesign of the offline HTML (Track A) and a later React Flow workflow-map prototype (Track B). Reviewed on 2026-06-03 against the live repo. Track A judged ready once five edits land; the edits were handed to codex through the issue. Track B stays sequenced behind Track A, with React Flow held out of the single-file artifact until v3.
+
 ## Repo
 The repo root, initialized from `gs_projectfiles`. Shape:
 - `content/entries/*.yaml`: one asset per file, the value layer.
@@ -28,6 +30,8 @@ Three layers: content (YAML), template (HTML, written once), build (a Python loo
 Four hard rules, all script-checked: every required schema field present per type; `core_function` names no tool; `domain_gap` present and substantive for every finance asset; any workflow with a remediation step carries a human-sign-off gate. An offline check aborts the build if the output references anything external. Navigation is by workflow stage (intake-classify, research, remediate, communicate). Tier 1 to 4 is a tag and a filter, not the grouping axis.
 
 ## Open items
+- Track A frontend redesign (issue #8): a light square-card library replacing the dark accordion. Build after codex folds in the five review edits: scope the offline and browser-storage scanner so entry prose does not false-positive, emit a `data-type` attribute so the workflow type filter can work, resolve issue #2's stage handling, use a native `<dialog>` drawer for details, and add a stage-count summary token.
+- Track B workflow-map prototype (issue #8): inline SVG or a small inline script drawn from the YAML for v2; React Flow deferred to v3 behind the same offline and storage scan over every emitted file. A `docs/react-flow-pro-license-note.md` must land before any Pro-informed code.
 - Review the 14-entry pack for desk fit. Confirm whether the asset names, fields, and issue types match the real Gainskeeper operating cadence.
 - Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the taxonomy, routing rules, and form mappings directly.
 - Reconstruct or commit the missing research inventory if tier tags need audit support beyond the source notes in each entry.
