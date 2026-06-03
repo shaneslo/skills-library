@@ -62,7 +62,7 @@ steps:
       fixes called out, ready for change-control review.
   - title: Confirm filing readiness
     prompt: |
-      Check the period against its reporting obligations before it closes. Confirm withholding ties to the documentation: 24% backup only on a B-notice or bad TIN, 30% NRA default reduced to a treaty rate only on a valid claim, chapter 4 where documentation is missing. Confirm every reportable item maps to a form across the 1099 series and 1042-S. Flag any post-period issuer reclass or amended document as corrected-form risk, since a 1099 or 1042-S correction may follow. List the open items that block certifying the period.
+      Check the period against its reporting obligations before it closes. Confirm withholding ties to the documentation: 24% backup withholding on a B-notice, a missing or incorrect TIN, or a presumed US payee with no valid documentation; 30% NRA default reduced to a treaty rate only on a valid claim; chapter 4 where documentation is missing. Confirm every reportable item maps to a form across the 1099 series and 1042-S. Flag any post-period issuer reclass or amended document as corrected-form risk, since a 1099 or 1042-S correction may follow. List the open items that block certifying the period.
     output: >
       A filing-readiness checklist: withholding tied to documentation, form
       mapping complete, corrected-form watch list, and the blockers that remain.
