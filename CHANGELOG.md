@@ -23,6 +23,12 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   no longer pins the repo to an absolute path.
 
 ### Added
+- `content/entries/period-close-reconciliation-workflow.yaml`: a period-close
+  tie-out runbook. It chains existing single-task assets (data-quality profiler,
+  GL reconciler break triage, metric-movement diagnostics, KPI readout) into one
+  ordered close, with a filing-readiness step and four human sign-off gates. Sits
+  in the `research` stage beside the break-diagnostic workflow without overlapping
+  it: this one reconciles a whole period, that one diagnoses a single break.
 - `tests/test_validate.py`: contract tests for `validate_entries`, one per rule,
   with regression cases for each fix above. Run with `python -m pytest`.
 - `requirements-dev.txt` and `requirements.txt` to pin the build and test deps.
