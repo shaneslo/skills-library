@@ -3,127 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skills Library — Tax-Ops AI</title>
+<title>Skills Library - Tax-ops AI</title>
 <style>
   :root{
-    --bg:#0f1419; --panel:#171d26; --panel2:#1e2630; --ink:#e6edf3;
-    --muted:#8b98a5; --line:#2a3340; --accent:#4a9eff; --accent-dim:#27456e;
-    --good:#3fb950; --warn:#d29922; --tag:#30363d; --gap:#3a2a12; --gap-line:#7a5a1f;
+    --bg:#f6f5f1; --paper:#ffffff; --ink:#20242a; --muted:#65717c;
+    --line:#d9d6cd; --soft:#ece8de; --blue:#295f98; --green:#3c704d;
+    --amber:#8a5a14; --rose:#98536a; --violet:#65558f; --shadow:0 18px 45px rgba(32,36,42,.16);
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font:15px/1.6 var(--sans);background:var(--bg);color:var(--ink);
-    padding:32px 24px 80px;max-width:1080px;margin:0 auto;-webkit-font-smoothing:antialiased}
+  body{font:15px/1.55 var(--sans);background:var(--bg);color:var(--ink);
+    padding:28px 24px 76px;max-width:1240px;margin:0 auto;-webkit-font-smoothing:antialiased}
+  button,input{font:inherit}
+  button{cursor:pointer}
 
-  header{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
-  h1{font-size:21px;font-weight:650;letter-spacing:-.015em}
-  .sub{color:var(--muted);font-size:13px;margin-top:5px}
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end;
+    border-bottom:1px solid var(--line);padding:8px 0 22px;margin-bottom:18px}
+  h1{font-size:34px;line-height:1.04;font-weight:720}
+  .sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:70ch}
+  .hero-stat{border:1px solid var(--line);background:var(--paper);padding:14px 16px;
+    min-width:210px;text-align:right}
+  .hero-stat strong{display:block;font-size:22px;line-height:1.1}
+  .hero-stat span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 
-  .intro{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    padding:6px 18px;margin-bottom:20px}
-  .intro summary{cursor:pointer;list-style:none;padding:12px 0;font-size:13px;
-    font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .intro{background:var(--paper);border:1px solid var(--line);padding:16px 18px;
+    margin-bottom:18px}
+  .intro summary{cursor:pointer;list-style:none;font-size:12px;font-weight:700;
+    color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
   .intro summary::-webkit-details-marker{display:none}
-  .intro summary::before{content:"▸ ";color:var(--accent)}
-  .intro[open] summary::before{content:"▾ "}
-  .intro ol{margin:6px 0 16px 20px;color:var(--ink)}
-  .intro li{margin:6px 0}
-  .intro p{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+  .intro ol{margin:12px 0 4px 20px;color:var(--ink)}
+  .intro li{margin:5px 0}
+  .intro p{color:var(--muted);font-size:13.5px;margin:10px 0 0}
 
-  .controls{position:sticky;top:0;background:var(--bg);padding:14px 0 16px;z-index:5;
-    border-bottom:1px solid var(--line);margin-bottom:22px}
-  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+  .controls{position:sticky;top:0;background:rgba(246,245,241,.96);padding:12px 0 14px;
+    z-index:5;border-bottom:1px solid var(--line);margin-bottom:24px;backdrop-filter:blur(10px)}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:9px}
   .row:last-child{margin-bottom:0}
   .label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
-    width:62px;flex:0 0 auto}
-  .filter{background:var(--panel2);color:var(--ink);border:1px solid var(--line);
-    border-radius:20px;padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;
-    transition:border-color .12s,background .12s}
-  .filter:hover{border-color:var(--accent-dim)}
-  .filter.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
-  #search{flex:1;min-width:200px;background:var(--panel2);color:var(--ink);
-    border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13.5px;
-    font-family:inherit}
-  #search:focus{outline:none;border-color:var(--accent)}
+    width:58px;flex:0 0 auto}
+  .filter{background:var(--paper);color:var(--ink);border:1px solid var(--line);
+    border-radius:0;padding:6px 11px;font-size:12.5px}
+  .filter:hover{border-color:var(--blue)}
+  .filter.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  #search{flex:1;min-width:240px;background:var(--paper);color:var(--ink);
+    border:1px solid var(--line);border-radius:0;padding:8px 10px;font-size:13.5px}
+  #search:focus{outline:2px solid rgba(41,95,152,.22);border-color:var(--blue)}
   #count{font-size:12px;color:var(--muted);margin-left:auto}
 
-  .stage-group{margin-bottom:30px}
-  .stage-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
-    color:var(--accent);margin:0 0 12px;font-weight:650}
+  .stage-group{margin-bottom:34px}
+  .stage-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);
+    margin:0 0 12px;font-weight:750}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .card{min-height:230px;background:var(--paper);border:1px solid var(--line)}
+  .card.workflow{border-top:4px solid var(--blue)}
+  .card.is-hidden{display:none}
+  .card-open{width:100%;height:100%;min-height:230px;text-align:left;border:0;background:transparent;
+    color:inherit;padding:15px;display:flex;flex-direction:column;gap:12px}
+  .card-open:hover{outline:2px solid rgba(41,95,152,.18);outline-offset:-2px}
+  .card-open:focus-visible{outline:3px solid rgba(41,95,152,.32);outline-offset:-3px}
+  .summary-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .name{font-weight:720;font-size:15px;line-height:1.22}
+  .tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:112px}
+  .tag{font-size:10px;text-transform:uppercase;letter-spacing:.04em;background:var(--soft);
+    color:var(--ink);padding:3px 6px;border:1px solid transparent;white-space:nowrap}
+  .t-type{background:#e6eef6;color:var(--blue)}
+  .t-stage{background:#e6efe8;color:var(--green)}
+  .tier-1{background:#f5e7ed;color:var(--rose)}
+  .tier-2{background:#ece8f7;color:var(--violet)}
+  .tier-3{background:#e7edf4;color:var(--blue)}
+  .tier-4{background:#efede8;color:var(--muted)}
+  .core{color:var(--ink);font-size:13.5px;line-height:1.4}
+  .adapt{margin-top:auto;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    margin-bottom:12px;overflow:hidden}
-  .card[open]{border-color:var(--accent-dim)}
-  .card>summary{cursor:pointer;list-style:none;padding:15px 18px}
-  .card>summary::-webkit-details-marker{display:none}
-  .summary-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
-  .name{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
-  .card>summary::after{content:"+";color:var(--muted);font-size:18px;line-height:1;
-    float:right;margin-top:-22px}
-  .card[open]>summary::after{content:"–"}
-  .tags{flex:0 0 auto;display:flex;gap:5px;flex-wrap:wrap;margin-right:18px}
-  .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;
-    background:var(--tag);color:var(--ink);padding:3px 8px;border-radius:5px;white-space:nowrap}
-  .t-type{background:#243447;color:#9fc4ef}
-  .t-stage{background:#22332a;color:#8fcf9f}
-  .tier-1{background:#3a2530;color:#f0a0c0}
-  .tier-2{background:#2f2a3a;color:#c0a8f0}
-  .tier-3{background:#2a3340;color:#a8c4e8}
-  .tier-4{background:#30363d;color:#b0bac4}
-  .core{color:var(--ink);font-size:14px;margin-top:9px;max-width:80ch}
-  .adapt{color:var(--muted);font-size:12px;margin-top:6px;font-variant:small-caps;letter-spacing:.03em}
-
-  .body-area{padding:4px 18px 18px;border-top:1px solid var(--line)}
-  .copywrap{position:relative;margin:14px 0}
-  pre.body{background:#0b0f14;border:1px solid var(--line);border-radius:8px;
-    padding:16px 16px 16px;font:13px/1.6 var(--mono);color:#d6e2ee;
-    white-space:pre-wrap;word-break:break-word;overflow-x:auto}
-  .copy{position:absolute;top:9px;right:9px;background:var(--panel2);color:var(--ink);
-    border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12px;
-    cursor:pointer;font-family:inherit;transition:border-color .12s,color .12s}
-  .copy:hover{border-color:var(--accent);color:#fff}
-  .copy.ok{border-color:var(--good);color:var(--good)}
-  .copy-all{position:static;display:inline-block;margin:4px 0 6px}
-
+  .detail{width:min(880px,calc(100vw - 32px));max-height:min(86vh,900px);border:1px solid var(--line);
+    background:var(--paper);color:var(--ink);padding:0;box-shadow:var(--shadow)}
+  .detail::backdrop{background:rgba(32,36,42,.38)}
+  .dialog-head{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);
+    padding:16px 18px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+  .dialog-head h3{font-size:20px;line-height:1.2;margin-bottom:8px}
+  .dialog-tags{display:flex;gap:5px;flex-wrap:wrap}
+  .close,.copy{background:var(--paper);border:1px solid var(--line);color:var(--ink);
+    padding:6px 10px;font-size:12.5px}
+  .close:hover,.copy:hover{border-color:var(--blue)}
+  .copy.ok{border-color:var(--green);color:var(--green)}
+  .body-area{padding:18px}
+  .copywrap{position:relative;margin:12px 0 18px}
+  pre.body{background:#20242a;border:1px solid #20242a;padding:44px 15px 15px;
+    font:13px/1.56 var(--mono);color:#eef1f4;white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+  .copywrap .copy{position:absolute;top:9px;right:9px;background:#2d333b;color:#fff;border-color:#454d57}
+  .copy-all{display:inline-block;margin:0 0 12px}
   .field{margin:16px 0}
-  .field h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--muted);margin-bottom:6px;font-weight:650}
-  .field p{color:var(--ink);font-size:14px}
-  .field.gap{background:var(--gap);border-left:3px solid var(--gap-line);
-    border-radius:0 8px 8px 0;padding:12px 14px}
-  .field.gap h4{color:#e0b870}
-  .meta{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;
-    border-top:1px solid var(--line);padding-top:14px;margin-top:16px}
-  @media(max-width:640px){.meta{grid-template-columns:1fr}}
-
-  .workflow>summary{border-left:3px solid var(--accent)}
-  ol.steps{list-style:none;counter-reset:none;margin:8px 0}
-  .step{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px;
-    background:var(--panel2)}
+  .field h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+    margin-bottom:6px;font-weight:750}
+  .field p,.field li{font-size:14px}
+  .field.gap{background:#f6eddc;border-left:3px solid var(--amber);padding:12px 14px}
+  .field.gap h4,.gates h4{color:var(--amber)}
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px;border-top:1px solid var(--line);
+    padding-top:14px;margin-top:18px}
+  .steps{list-style:none;margin:8px 0}
+  .step{border:1px solid var(--line);padding:12px 14px;margin-bottom:10px;background:#fbfaf7}
   .step-head{display:flex;gap:10px;align-items:center;margin-bottom:4px}
-  .step-n{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);
-    color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600}
-  .step-title{font-weight:600;font-size:14px}
+  .step-n{width:24px;height:24px;background:var(--blue);color:#fff;font-size:12px;
+    display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto}
+  .step-title{font-weight:700;font-size:14px}
   .ref{color:var(--muted);font-weight:400;font-size:12px}
   .step-out{color:var(--muted);font-size:12.5px;margin-top:6px}
-  .gates{background:#2a1f1f;border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
-    padding:12px 14px}
-  .gates h4{color:#e0b870}
+  .gates{background:#fff5df;border-left:3px solid var(--amber);padding:12px 14px}
   .gates ul{margin-left:18px}
-  .gates li{margin:4px 0;font-size:13.5px}
-
   .empty{color:var(--muted);text-align:center;padding:40px;font-size:14px}
-  footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);
-    padding-top:16px}
-  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font:12.5px var(--mono)}
+  footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+  code{background:var(--soft);padding:1px 5px;font:12.5px var(--mono)}
+
+  @media(max-width:720px){
+    body{padding:20px 14px 64px}
+    header{grid-template-columns:1fr}
+    .hero-stat{text-align:left;min-width:0}
+    .label{width:100%;flex-basis:100%}
+    .card-grid{grid-template-columns:1fr}
+    .meta{grid-template-columns:1fr}
+    .dialog-head{align-items:flex-start}
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>Skills Library</h1>
-  <div class="sub">Prime brokerage tax-operations AI assets. Copy any prompt, paste it into the assistant you have. Runs offline.</div>
+  <div>
+    <h1>Skills Library</h1>
+    <div class="sub">Prime brokerage tax-operations AI assets. Copy the prompt text into the assistant at hand. The file runs offline.</div>
+  </div>
+  <div class="hero-stat">
+    <strong><!--COUNT--> assets</strong>
+    <span>Across <!--STAGE_COUNT--> workflow stages</span>
+  </div>
 </header>
 
 <details class="intro">
@@ -134,7 +147,7 @@
     <li><strong>Decompose it.</strong> Strip it to its core function, the part that holds no tool. If you cannot rebuild that core from scratch, you do not own it yet.</li>
     <li><strong>Adapt it.</strong> Pour in the domain knowledge the source could not have: the break-cause taxonomy, the remediation routing rules, the income-type to tax-form mapping. The domain-gap note on each card states what to supply.</li>
   </ol>
-  <p>Treat credible repos as specifications, not software. Harvest the decomposition, drop the code that will not run, re-express the rest as prompts.</p>
+  <p>Treat credible repos as specifications. Harvest the decomposition, drop the code that will not run, re-express the rest as prompts.</p>
 </details>
 
 <div class="controls">
@@ -147,6 +160,14 @@
     <button class="filter" data-stage="communicate">Communicate</button>
   </div>
   <div class="row">
+    <span class="label">Type</span>
+    <button class="filter active" data-type="all">All</button>
+    <button class="filter" data-type="prompt">Prompts</button>
+    <button class="filter" data-type="skill">Skills</button>
+    <button class="filter" data-type="agent">Agents</button>
+    <button class="filter" data-type="workflow">Workflows</button>
+  </div>
+  <div class="row">
     <span class="label">Tier</span>
     <button class="filter active" data-tier="all">All</button>
     <button class="filter" data-tier="1">Tier 1</button>
@@ -155,7 +176,7 @@
     <button class="filter" data-tier="4">Tier 4</button>
   </div>
   <div class="row">
-    <input id="search" type="text" placeholder="Search names and core functions" autocomplete="off">
+    <input id="search" type="text" placeholder="Search names, core functions, and prompt text" autocomplete="off">
     <span id="count"></span>
   </div>
 </div>
@@ -167,15 +188,13 @@
 <p class="empty" id="empty" hidden>No assets match the current filters.</p>
 
 <footer>
-  <!--COUNT--> assets. Built from <code>content/entries/</code> by <code>build/build.py</code>. Edit content and re-run <code>/build</code> to refresh.
+  <!--COUNT--> assets. Stages: <!--STAGES-->. Built from <code>content/entries/</code> by <code>build/build.py</code>.
 </footer>
 
 <script>
 (function(){
   "use strict";
 
-  // Copy raw prompt text to the clipboard. Falls back to selecting the text
-  // when the clipboard API is blocked, which happens on locked-down machines.
   function flash(btn, msg){
     var prev = btn.textContent;
     btn.textContent = msg;
@@ -206,7 +225,6 @@
   }
 
   function doCopy(text, btn, fallbackNode){
-    // Copy exact text. No transform, no smart-quote substitution.
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(
         function(){ flash(btn, "Copied"); },
@@ -221,12 +239,32 @@
   }
 
   document.addEventListener("click", function(ev){
+    var opener = ev.target.closest(".card-open");
+    if (opener) {
+      var dialog = document.getElementById(opener.getAttribute("data-dialog"));
+      if (dialog && dialog.showModal) dialog.showModal();
+      return;
+    }
+
+    var close = ev.target.closest(".close");
+    if (close) {
+      var d = close.closest("dialog");
+      if (d) d.close();
+      return;
+    }
+
+    var dialogTarget = ev.target.closest("dialog");
+    if (ev.target === dialogTarget) {
+      dialogTarget.close();
+      return;
+    }
+
     var btn = ev.target.closest(".copy");
     if (!btn) return;
     var kind = btn.getAttribute("data-copy");
     if (kind === "workflow") {
-      var card = btn.closest(".workflow");
-      var pres = card ? card.querySelectorAll("pre.body") : [];
+      var cardDialog = btn.closest("dialog");
+      var pres = cardDialog ? cardDialog.querySelectorAll("pre.body") : [];
       var chunks = [];
       pres.forEach(function(p, i){ chunks.push("Step " + (i + 1) + "\n" + p.textContent); });
       doCopy(chunks.join("\n\n"), btn, pres[0]);
@@ -237,47 +275,46 @@
     }
   });
 
-  // Filtering by stage, tier, and free text. All three combine.
-  var state = { stage: "all", tier: "all", q: "" };
+  var state = { stage: "all", type: "all", tier: "all", q: "" };
   var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
   var groups = Array.prototype.slice.call(document.querySelectorAll(".stage-group"));
   var countEl = document.getElementById("count");
   var emptyEl = document.getElementById("empty");
 
+  function setActive(kind, btn){
+    document.querySelectorAll(".filter[data-" + kind + "]").forEach(function(x){ x.classList.remove("active"); });
+    btn.classList.add("active");
+  }
+
   function apply(){
     var shown = 0;
     cards.forEach(function(c){
       var okStage = state.stage === "all" || c.getAttribute("data-stage") === state.stage;
+      var okType = state.type === "all" || c.getAttribute("data-type") === state.type;
       var okTier = state.tier === "all" || c.getAttribute("data-tier") === state.tier;
       var okQ = state.q === "" || (c.getAttribute("data-search") || "").indexOf(state.q) !== -1;
-      var show = okStage && okTier && okQ;
-      c.style.display = show ? "" : "none";
+      var show = okStage && okType && okTier && okQ;
+      c.classList.toggle("is-hidden", !show);
       if (show) shown++;
     });
     groups.forEach(function(g){
-      var any = g.querySelector('.card:not([style*="display: none"])');
+      var any = g.querySelector(".card:not(.is-hidden)");
       g.style.display = any ? "" : "none";
     });
     countEl.textContent = shown + (shown === 1 ? " asset" : " assets");
     emptyEl.hidden = shown !== 0;
   }
 
-  document.querySelectorAll(".filter[data-stage]").forEach(function(b){
-    b.addEventListener("click", function(){
-      state.stage = b.getAttribute("data-stage");
-      document.querySelectorAll(".filter[data-stage]").forEach(function(x){ x.classList.remove("active"); });
-      b.classList.add("active");
-      apply();
+  ["stage","type","tier"].forEach(function(kind){
+    document.querySelectorAll(".filter[data-" + kind + "]").forEach(function(b){
+      b.addEventListener("click", function(){
+        state[kind] = b.getAttribute("data-" + kind);
+        setActive(kind, b);
+        apply();
+      });
     });
   });
-  document.querySelectorAll(".filter[data-tier]").forEach(function(b){
-    b.addEventListener("click", function(){
-      state.tier = b.getAttribute("data-tier");
-      document.querySelectorAll(".filter[data-tier]").forEach(function(x){ x.classList.remove("active"); });
-      b.classList.add("active");
-      apply();
-    });
-  });
+
   document.getElementById("search").addEventListener("input", function(e){
     state.q = e.target.value.trim().toLowerCase();
     apply();

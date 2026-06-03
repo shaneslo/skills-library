@@ -14,7 +14,7 @@ from pathlib import Path
 # build.py lives in build/; add it to the path so we can import the validator.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "build"))
 
-from build import validate_entries  # noqa: E402
+from build import build, check_offline, render_asset, render_entries, render_workflow, validate_entries  # noqa: E402
 
 
 def asset(**over):
@@ -44,6 +44,7 @@ def workflow(**over):
         "id": "demo-flow",
         "name": "Demo flow",
         "type": "workflow",
+        "stage": "research",
         "tier": 1,
         "source": "example/repo",
         "domain_fit": "Reconciliation, directly.",
@@ -67,6 +68,12 @@ def test_valid_asset_passes():
 
 def test_valid_workflow_passes():
     assert validate_entries([workflow()]) == []
+
+
+def test_workflow_stage_is_required():
+    e = workflow()
+    del e["stage"]
+    assert "stage" in fields(validate_entries([e]))
 
 
 def test_missing_required_field_is_flagged():
@@ -131,3 +138,49 @@ def test_remediation_described_only_in_output_still_needs_a_gate():
         gates=[],
     )
     assert "gates" in fields(validate_entries([e]))
+
+
+def test_render_asset_has_type_dialog_and_search_corpus():
+    html = render_asset(asset(body="Research localStorage prose and withholding variance."))
+    assert '<article class="card"' in html
+    assert 'data-type="prompt"' in html
+    assert '<dialog class="detail" id="demo-entry-dialog">' in html
+    assert 'withholding variance' in html
+    assert 'localstorage prose' in html
+
+
+def test_render_workflow_keeps_starting_stage_and_type():
+    html = render_workflow(workflow())
+    assert 'class="card workflow"' in html
+    assert 'data-stage="research"' in html
+    assert 'data-type="workflow"' in html
+    assert '<dialog class="detail" id="demo-flow-dialog">' in html
+
+
+def test_render_entries_groups_workflow_in_starting_stage():
+    html = render_entries([workflow()])
+    assert 'data-group="research"' in html
+    assert 'data-group="workflow"' not in html
+
+
+def test_build_substitutes_stage_count_and_type_filter():
+    html = build([asset(), workflow(id="second-flow", _file="second-flow.yaml")])
+    assert "2 assets" in html
+    assert "Across 4 workflow stages" in html
+    assert 'data-type="workflow"' in html
+    assert 'data-type="prompt"' in html
+
+
+def test_offline_scan_ignores_prompt_prose_storage_and_url_tokens():
+    html = build([
+        asset(
+            body="Mention localStorage, document.cookie, @import, url(https://example.com/a.css), and https://example.com as prose."
+        )
+    ])
+    assert check_offline(html) == []
+
+
+def test_offline_scan_catches_template_chrome_storage_reference():
+    html = '<main id="library"></main><script>localStorage.setItem("x","y")</script>'
+    errors = check_offline(html)
+    assert any("localStorage" in e for e in errors)
