@@ -34,8 +34,8 @@ ASSET_TYPES = ["prompt", "skill", "agent", "workflow"]
 ADAPTATIONS = ["use-as-is", "adapt", "author-from-spec"]
 
 # Required fields by entry type. See SKILLS_LIBRARY_SPEC.md sections 4 and 5.
-COMMON_REQUIRED = ["id", "name", "type", "tier", "source", "domain_fit", "maturity"]
-ASSET_REQUIRED = COMMON_REQUIRED + ["stage", "core_function", "adaptation", "body", "domain_gap"]
+COMMON_REQUIRED = ["id", "name", "type", "stage", "tier", "source", "domain_fit", "maturity"]
+ASSET_REQUIRED = COMMON_REQUIRED + ["core_function", "adaptation", "body", "domain_gap"]
 WORKFLOW_REQUIRED = COMMON_REQUIRED + ["trigger", "steps", "gates", "output"]
 
 # A core_function naming any of these has not been decomposed to a tool-agnostic
@@ -187,14 +187,40 @@ def tag(label, cls):
     return '<span class="tag %s">%s</span>' % (cls, html.escape(label))
 
 
+def search_text(*items):
+    chunks = []
+    for item in items:
+        if item is None:
+            continue
+        if isinstance(item, list):
+            for value in item:
+                if isinstance(value, dict):
+                    chunks.extend(str(v) for v in value.values())
+                else:
+                    chunks.append(str(value))
+        elif isinstance(item, dict):
+            chunks.extend(str(v) for v in item.values())
+        else:
+            chunks.append(str(item))
+    return html.escape(" ".join(chunks).lower(), quote=True)
+
+
+def safe_id(value):
+    return re.sub(r"[^a-zA-Z0-9_-]+", "-", str(value)).strip("-")
+
+
 def render_asset(e):
+    eid = safe_id(e.get("id", "asset"))
     name = html.escape(str(e.get("name", "")))
     etype = html.escape(str(e.get("type", "")))
     stage = str(e.get("stage", ""))
     tier = int(e.get("tier", 0))
     adaptation = html.escape(str(e.get("adaptation", "")))
     core = html.escape(str(e.get("core_function", "")).strip())
-    search = html.escape((str(e.get("name", "")) + " " + str(e.get("core_function", ""))).lower(), quote=True)
+    search = search_text(
+        e.get("name", ""), e.get("core_function", ""), e.get("body", ""),
+        e.get("domain_gap", ""), e.get("domain_fit", ""), e.get("notes", "")
+    )
 
     body_raw = html.escape(str(e.get("body", "")).rstrip("\n"))
     gap = render_md(e.get("domain_gap", ""))
@@ -205,19 +231,30 @@ def render_asset(e):
     notes_html = render_md(notes) if notes else ""
 
     parts = []
-    parts.append('<details class="card" data-stage="%s" data-tier="%d" data-search="%s">'
-                 % (html.escape(stage, quote=True), tier, search))
-    parts.append('<summary>')
-    parts.append('<div class="summary-head">')
+    parts.append('<article class="card" data-stage="%s" data-tier="%d" data-type="%s" data-search="%s">'
+                 % (html.escape(stage, quote=True), tier, html.escape(etype, quote=True), search))
+    parts.append('<button class="card-open" type="button" data-dialog="%s-dialog">' % eid)
+    parts.append('<span class="summary-head">')
     parts.append('<span class="name">%s</span>' % name)
     parts.append('<span class="tags">%s%s%s</span>'
-                 % (tag(etype, "t-type"), tag(stage or "any", "t-stage"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
+                 % (tag(etype, "t-type"), tag(stage, "t-stage"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
+    parts.append('</span>')
+    parts.append('<span class="core">%s</span>' % core)
+    parts.append('<span class="adapt">%s</span>' % adaptation)
+    parts.append('</button>')
+
+    parts.append('<dialog class="detail" id="%s-dialog">' % eid)
+    parts.append('<div class="dialog-head">')
+    parts.append('<div>')
+    parts.append('<h3>%s</h3>' % name)
+    parts.append('<div class="dialog-tags">%s%s%s</div>'
+                 % (tag(etype, "t-type"), tag(stage, "t-stage"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
     parts.append('</div>')
-    parts.append('<div class="core">%s</div>' % core)
-    parts.append('<div class="adapt">%s</div>' % adaptation)
-    parts.append('</summary>')
+    parts.append('<button class="close" type="button" aria-label="Close">Close</button>')
+    parts.append('</div>')
 
     parts.append('<div class="body-area">')
+    parts.append('<div class="field"><h4>Core function</h4><p>%s</p></div>' % core)
     parts.append('<div class="copywrap">')
     parts.append('<button class="copy" type="button" data-copy="prompt">Copy prompt</button>')
     parts.append('<pre class="body">%s</pre>' % body_raw)
@@ -235,14 +272,16 @@ def render_asset(e):
         parts.append('<div class="field"><h4>Notes</h4>%s</div>' % notes_html)
     parts.append('</div>')
     parts.append('</div>')
-    parts.append('</details>')
+    parts.append('</dialog>')
+    parts.append('</article>')
     return "\n".join(parts)
 
 
 def render_workflow(e):
+    eid = safe_id(e.get("id", "workflow"))
     name = html.escape(str(e.get("name", "")))
     tier = int(e.get("tier", 0))
-    stage = str(e.get("stage", "workflow"))
+    stage = str(e.get("stage", ""))
     trigger = render_md(e.get("trigger", ""))
     fit = render_md(e.get("domain_fit", ""))
     maturity = render_md(e.get("maturity", ""))
@@ -250,19 +289,32 @@ def render_workflow(e):
     output = render_md(e.get("output", ""))
     gates = e.get("gates") or []
     steps = e.get("steps") or []
-    search = html.escape((str(e.get("name", "")) + " " + str(e.get("trigger", ""))).lower(), quote=True)
+    search = search_text(
+        e.get("name", ""), e.get("trigger", ""), steps, gates, e.get("output", ""),
+        e.get("domain_fit", ""), e.get("notes", "")
+    )
 
     parts = []
-    parts.append('<details class="card workflow" data-stage="%s" data-tier="%d" data-search="%s">'
+    parts.append('<article class="card workflow" data-stage="%s" data-tier="%d" data-type="workflow" data-search="%s">'
                  % (html.escape(stage, quote=True), tier, search))
-    parts.append('<summary>')
-    parts.append('<div class="summary-head">')
+    parts.append('<button class="card-open" type="button" data-dialog="%s-dialog">' % eid)
+    parts.append('<span class="summary-head">')
     parts.append('<span class="name">%s</span>' % name)
-    parts.append('<span class="tags">%s%s</span>'
-                 % (tag("workflow", "t-type"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
+    parts.append('<span class="tags">%s%s%s</span>'
+                 % (tag("workflow", "t-type"), tag(stage, "t-stage"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
+    parts.append('</span>')
+    parts.append('<span class="core">Trigger: %s</span>' % html.escape(str(e.get("trigger", "")).strip()))
+    parts.append('</button>')
+
+    parts.append('<dialog class="detail" id="%s-dialog">' % eid)
+    parts.append('<div class="dialog-head">')
+    parts.append('<div>')
+    parts.append('<h3>%s</h3>' % name)
+    parts.append('<div class="dialog-tags">%s%s%s</div>'
+                 % (tag("workflow", "t-type"), tag(stage, "t-stage"), tag("tier " + str(tier), "t-tier tier-%d" % tier)))
     parts.append('</div>')
-    parts.append('<div class="core">Trigger: %s</div>' % html.escape(str(e.get("trigger", "")).strip()))
-    parts.append('</summary>')
+    parts.append('<button class="close" type="button" aria-label="Close">Close</button>')
+    parts.append('</div>')
 
     parts.append('<div class="body-area">')
     parts.append('<button class="copy copy-all" type="button" data-copy="workflow">Copy whole workflow</button>')
@@ -304,20 +356,18 @@ def render_workflow(e):
         parts.append('<div class="field"><h4>Maturity</h4>%s</div>' % maturity)
     parts.append('</div>')
     parts.append('</div>')
-    parts.append('</details>')
+    parts.append('</dialog>')
+    parts.append('</article>')
     return "\n".join(parts)
 
 
 def render_entries(entries):
-    # Group by stage for the primary navigation axis. Workflows without a stage
-    # fall into their own group at the end.
+    # Group by starting stage for the primary navigation axis. Type filtering
+    # isolates workflows; they do not move to a synthetic workflow bucket.
     by_stage = {s: [] for s in STAGES}
-    extra = []
     for e in entries:
-        if e.get("type") == "workflow" and e.get("stage") not in STAGES:
-            extra.append(e)
-        else:
-            by_stage.get(e.get("stage"), extra).append(e)
+        if e.get("stage") in STAGES:
+            by_stage[e.get("stage")].append(e)
 
     blocks = []
     for s in STAGES:
@@ -326,14 +376,10 @@ def render_entries(entries):
             continue
         blocks.append('<section class="stage-group" data-group="%s">' % html.escape(s, quote=True))
         blocks.append('<h2 class="stage-title">%s</h2>' % html.escape(s))
+        blocks.append('<div class="card-grid">')
         for e in group:
             blocks.append(render_workflow(e) if e.get("type") == "workflow" else render_asset(e))
-        blocks.append('</section>')
-    if extra:
-        blocks.append('<section class="stage-group" data-group="workflow">')
-        blocks.append('<h2 class="stage-title">cross-stage workflows</h2>')
-        for e in extra:
-            blocks.append(render_workflow(e))
+        blocks.append('</div>')
         blocks.append('</section>')
     return "\n".join(blocks)
 
@@ -349,14 +395,34 @@ OFFLINE_PATTERNS = [
     (r'url\(\s*["\']?\s*(?:https?:)?//', "css url() to a remote resource"),
 ]
 
+STORAGE_PATTERNS = [
+    (r'\blocalStorage\b', "localStorage reference"),
+    (r'\bsessionStorage\b', "sessionStorage reference"),
+    (r'\bindexedDB\b', "indexedDB reference"),
+    (r'\bdocument\.cookie\b', "document.cookie reference"),
+]
+
+
+def chrome_only(html_text):
+    # Entry prose can legitimately mention URLs, CSS tokens, or storage APIs.
+    # The offline contract applies to executable chrome: template, CSS, JS, and
+    # renderer-owned attributes around the content block.
+    return re.sub(
+        r'(<main\b[^>]*id=["\']library["\'][^>]*>).*?(</main>)',
+        r'\1<!-- entries omitted for offline scan -->\2',
+        html_text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
 
 def check_offline(html_text):
     # Return a list of human-readable offline violations. Empty means clean.
     found = []
-    for pat, label in OFFLINE_PATTERNS:
-        for m in re.finditer(pat, html_text, re.IGNORECASE):
+    scan_text = chrome_only(html_text)
+    for pat, label in OFFLINE_PATTERNS + STORAGE_PATTERNS:
+        for m in re.finditer(pat, scan_text, re.IGNORECASE):
             start = max(0, m.start() - 30)
-            snippet = html_text[start:m.start() + 40].replace("\n", " ")
+            snippet = scan_text[start:m.start() + 40].replace("\n", " ")
             found.append("%s near: ...%s..." % (label, snippet.strip()))
     return found
 
@@ -367,11 +433,11 @@ def build(entries):
     out = template.replace("<!--ENTRIES-->", cards)
     out = out.replace("<!--COUNT-->", str(len(entries)))
     out = out.replace("<!--STAGES-->", ",".join(STAGES))
+    out = out.replace("<!--STAGE_COUNT-->", str(len(STAGES)))
     return out
 
 
 def print_report(errors, entries):
-    total = len([e for e in entries if "_parse_error" not in e])
     if not errors:
         print("PASS. %d entries, every required field present, every rule clear." % len(entries))
         return True
