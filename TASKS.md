@@ -5,7 +5,6 @@
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
 - [ ] **Review the Data Analytics v1 pack for desk fit** - confirm which metrics, break cuts, and status-note shapes match the real operating cadence
 - [ ] **Review the Gainskeeper operations pack for desk fit** - confirm exception fields, gain/loss tie-out shape, email buckets, tracker statuses, and work-item priority rules
-- [ ] **Fill bracketed domain inserts into terminal-form variants** - decide whether v1 keeps reusable inserts or ships assembled sibling entries with taxonomy, routing, and form mappings embedded
 - [ ] **Decide the next source family to harvest** - likely GitHub agent patterns, financial-services examples, or document-review workflows
 
 ## Waiting On
@@ -15,9 +14,7 @@
 
 ## Review follow-ups (from 05-31-2026 repo review, design calls)
 
-- [ ] **Decide workflow stage handling** - a stage-less workflow renders `data-stage="workflow"`, which no filter button selects. Give workflows a real stage or add a "workflow" filter control
-- [ ] **Resolve the research-inventory criterion** - spec criterion 8 ties `tier` to an inventory that is not a checked-in file. Commit the inventory or drop the criterion
-- [ ] **Decide the exemplar's terminal form** - ship a fully-assembled sibling entry with `[INSERT: …]` gaps filled, or document open brackets as the intended end state
+All three resolved 06-03-2026. See the "Decided" block in CHANGELOG.md.
 
 ## Someday
 
@@ -27,6 +24,7 @@
 
 ## Done
 
+- [x] ~~Resolve the three 05-31 review design calls~~ (06-03-2026) - workflow stage handling (resolved on main by PR #9's Type-axis "Workflows" filter; `stage` is now required, removing the orphaned `data-stage` value), research-inventory criterion (tier now reads from source/maturity, no external file), exemplar terminal form (bracketed inserts are the intended end state, documented in the spec). Bracketed-insert fill task closed by that last call.
 - [x] ~~Initialize Data Analytics v1 pack~~ (06-03-2026) - added six tax-ops-adapted entries from the Data Analytics plugin: metric diagnostics, data quality profiling, break backlog KPI readout, dashboard brief, report writer, and an end-to-end diagnostic workflow
 - [x] ~~Initialize Gainskeeper operations pack~~ (06-03-2026) - added seven entries for exception research, gain/loss tie-out, email intake, field replies, KB review, break trackers, and work-item routing
 - [x] ~~Build the first Skills Library artifact~~ (06-03-2026) - generated `dist/skills-library.html` from seven entries; validation passed and the offline check was clean
