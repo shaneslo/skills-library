@@ -53,6 +53,15 @@ The slash commands wrap the script. The script is the source of truth, so either
 4. Run `/validate`, clear every failure, then `/build`.
 5. Match the exemplar. An entry that cannot pass the three tests visibly is not ready.
 
+## Session capture and shipping
+If a working session produces a candidate asset, do not leave it in chat history. Close the loop in the repo.
+
+1. Capture a stable session reference (permalink, export, or a copied excerpt) and list the intended entry ids.
+2. If the asset is ready to ship, scaffold `content/entries/<id>.yaml` and fill it to the spec, even if the body uses bracketed inserts.
+3. If the asset is not ready to ship, open a tracking issue that names the intended entry id and carries a short, redacted summary of what was agreed. If the platform cannot export chat logs, a human reviewer will need to copy the relevant excerpt.
+4. Run `/validate` and `python -m pytest` before opening a PR.
+5. Every discussed asset ends as either a merged entry or an open tracking issue.
+
 ## What validation enforces
 - Every required field is present for the entry type. Assets carry the section 4 fields, workflows the section 5 fields.
 - `id` is a stable slug that matches the filename stem and is unique across the library.

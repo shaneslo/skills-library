@@ -31,6 +31,7 @@ Four hard rules, all script-checked: every required schema field present per typ
 - Review the 14-entry pack for desk fit. Confirm whether the asset names, fields, and issue types match the real Gainskeeper operating cadence.
 - Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the taxonomy, routing rules, and form mappings directly.
 - Reconstruct or commit the missing research inventory if tier tags need audit support beyond the source notes in each entry.
+- Reconcile assistant session logs against the repo. For any session that discussed a new asset, confirm it is present under `content/entries/` or tracked as an issue with the intended entry id. If the chat platform cannot export logs, a human reviewer will need to paste a short excerpt.
 - Tax figures in `tax-ops-domain.md` (24% backup withholding, 30% NRA default, 1099-DIV box numbers, 1042-S income codes 06/01/51) are as of training. Confirm against current-year IRS instructions each filing season.
 - GL Reconciler maturity stats (roughly 29k stars, 4.1k forks, 2026-05-05 release) came from the research pass and were not re-verified. Spot-check before the library goes wider than you.
 

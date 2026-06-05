@@ -27,6 +27,9 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   with regression cases for each fix above. Run with `python -m pytest`.
 - `requirements-dev.txt` and `requirements.txt` to pin the build and test deps.
 - Tracked `.claude/agents/repo-review-orchestrator.md` (was untracked).
+- Session-to-repo checklist: when an assistant session produces a candidate
+  asset, capture a stable reference and ensure it ships as an entry or becomes
+  a tracking issue. (`CLAUDE.md`, `TASKS.md`, `memory/projects/skills-library.md`)
 - `memory/README.md`: defines the memory layer, its boundary with the build
   (`build/build.py` reads only `content/entries/`, never `memory/`), the
   hot-cache/cold-store context model, the per-file roles, the `projects/`

@@ -2,6 +2,7 @@
 
 ## Active
 
+- [ ] **Reconcile assistant session logs for missing skills** - review Codex CLI, Claude Code, and clod.ai sessions that discussed new assets; for each, ensure there is either a `content/entries/*.yaml` entry or a tracking issue with the intended entry id
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
 - [ ] **Review the Data Analytics v1 pack for desk fit** - confirm which metrics, break cuts, and status-note shapes match the real operating cadence
 - [ ] **Review the Gainskeeper operations pack for desk fit** - confirm exception fields, gain/loss tie-out shape, email buckets, tracker statuses, and work-item priority rules
