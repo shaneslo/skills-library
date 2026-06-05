@@ -1,0 +1,49 @@
+id: claude-build-command
+name: Library build command (Claude Code)
+type: skill
+stage: communicate
+tier: 1
+source: "skills-library repository, .claude/commands/build.md"
+core_function: >
+  Validate structured content, compile it into a self-contained artifact,
+  verify offline compliance, and report the output location or stop at
+  the first failure with a clear diagnostic.
+domain_fit: >
+  Priority 2, supporting. The build gate for the library. Ensures only
+  valid, offline-compliant content ships and provides a repeatable
+  artifact-generation process.
+adaptation: use-as-is
+maturity: >
+  First-party, built for this repository. Orchestrates validation, rendering,
+  offline checking, and artifact assembly in a single command. In active use
+  for every library release.
+body: |
+  Build the library. Stop at the first failure and say why.
+
+  Steps:
+
+  1. Validate first. Run `python build/build.py --check`. If it exits
+     non-zero, stop. Report the failing file, field, and rule. Do not
+     build on top of invalid content.
+  2. Build. Run `python build/build.py`. The script validates again, renders
+     every entry, runs the offline check, and writes `dist/skills-library.html`.
+  3. Confirm offline compliance. The script scans the output for external
+     `src` and `href` attributes, `<link>` elements, external `<script src>`,
+     `@import`, and `url()` to a remote resource. If it finds any, the build
+     aborts before writing. Confirm the scan reported clean.
+  4. Report the absolute path to `dist/skills-library.html` and the entry count.
+  5. Note that the file is meant to open from `file://` with no network.
+
+  One failure stops the sequence. Name the failing step, the reason, and
+  the fix. Do not continue past a failure to report a partial result.
+domain_gap: >
+  This skill is repository-specific and enforces the offline requirement
+  that matters to this library: no external dependencies, so the artifact
+  runs on a locked-down machine. The offline scan patterns are hardcoded
+  to catch external references in HTML, CSS, and JavaScript. Adapting to
+  a different artifact format means updating the scan to match that
+  format's external-reference syntax and updating the output path in step 4.
+notes: >
+  Invoked as `/build` in Claude Code. The slash command wrapper loads this
+  skill text and executes the steps. The underlying script is `build/build.py`.
+  The final artifact is `dist/skills-library.html`, which is gitignored.

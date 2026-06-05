@@ -1,0 +1,126 @@
+id: tax-ops-domain-knowledge
+name: Tax operations domain knowledge
+type: skill
+stage: research
+tier: 1
+source: "skills-library repository, .claude/skills/tax-ops-domain.md"
+core_function: >
+  Provide the domain-specific classification taxonomies, routing rules,
+  and form mappings that turn generic reconciliation and reporting patterns
+  into role-specific, defensible procedures for a prime brokerage tax desk.
+domain_fit: >
+  Priority 1, directly. This is the domain layer that fills the gap between
+  generic skills and tax-ops-specific ones. Without it, every skill is a
+  competent generalist. With it, skills become defensible and specific to
+  the desk.
+adaptation: author-from-spec
+maturity: >
+  First-party, built for this repository. Captures the break-cause taxonomy,
+  the UI/XML/SQL/plugin remediation routing rules, the income-type to tax-form
+  mappings (1099-DIV, 1099-B, 1099-INT, 1042-S), and the three-test asset
+  framework. In active use for authoring and adapting every content entry.
+body: |
+  This is the domain content that turns a generic skill into a role-specific
+  one. When a content entry carries a bracketed insert (for example `[INSERT:
+  cause taxonomy]`), the text comes from here. Confirm box numbers, income
+  codes, and rates against the current-year IRS instructions and the firm's
+  tax guidance each filing season. Codes and thresholds change.
+
+  ## Break-cause taxonomy
+
+  A break is a reconciliation discrepancy between the client back-office
+  transaction log and an authoritative reference (custodian, depository, the
+  tax engine, or a client statement). Classify every break into one category
+  before proposing a fix. When the cause is unclear, mark it unclassified
+  rather than guess.
+
+  [INSERT: 11 break categories with signatures and origins]
+
+  ## Remediation routing rules
+
+  Pick the path with the smallest blast radius that does the job. These are
+  desk conventions; confirm each against the firm's change-control policy
+  before a write. Read before you write, every time.
+
+  Work the decision in order and stop at the first match:
+
+  1. Investigation only, no change yet. Use a read-only path: a UI view or
+     a read-only query. Never open a write path to look.
+  2. One record or a few, field editable in the front end. Use the UI. It
+     logs the change and the audit trail comes for free. First choice for
+     one-offs.
+  3. Many records, or a field the UI does not expose, but the system accepts
+     a structured message for the change. Use an XML update. Re-send a
+     corrected transaction or static-data message against the known schema.
+     Use for medium volume that follows a message contract.
+  4. The same multi-step correction recurs and a vetted routine exists for
+     it. Use the plugin. Examples: a batch wash-sale recompute, a bulk
+     withholding re-rate. Use when the pattern repeats and the tool is
+     approved.
+  5. High volume, back-end only, no UI field, no message path, no plugin.
+     Use a write SQL query, under change control, with sign-off before
+     execution and a tested rollback. Highest blast radius, most controls,
+     last resort.
+
+  [INSERT: Routing table with scope, controls, and conditions]
+
+  Two standing rules. A read query needs no sign-off; a write query always
+  does. A correction that touches more than one account through static data
+  is an account-level fix (taxonomy category 8), so fix the static data once
+  rather than patching each transaction.
+
+  ## Income-type to tax-form mappings
+
+  Map every reportable item to its form before you reconcile withholding or
+  basis. US-person reporting is the 1099 series; foreign-person reporting is
+  1042-S. Account documentation decides which regime applies.
+
+  [INSERT: Form mapping table covering 1099-DIV, 1099-B, 1099-INT, 1099-OID,
+  1099-MISC, 1042-S with key fields and recipient types]
+
+  [INSERT: Account classification rules for W-9, W-8BEN, W-8BEN-E, FATCA,
+  CRS, backup withholding, NRA withholding, treaty rates]
+
+  When a withholding break (taxonomy category 7) and a documentation gap
+  (category 8) both appear, fix the documentation first. The withholding
+  follows from the classification.
+
+  ## Three-test asset framework
+
+  Run every candidate asset through three tests before it earns a place in
+  the library. An asset that cannot pass all three visibly is not ready.
+
+  1. Understand it. Read the prompt or procedure end to end. If the steps
+     are not legible to you, you cannot defend the output, and it does not
+     ship.
+  2. Decompose it. Strip the asset to its core function, the part that names
+     no tool. State that core in one sentence. If the sentence names a
+     database, a runtime, or a connector, keep stripping. If you cannot
+     rebuild the core from scratch, even imperfectly, you do not own it yet.
+  3. Adapt it. Pour in the domain knowledge the source could not have: the
+     break taxonomy above, the routing rules above, the form mappings above.
+     Write the `domain_gap` note to say exactly what gets poured in and what
+     changes once it is filled.
+
+  The framing behind the tests: treat credible repos as specifications, not
+  software. Harvest the workflow decomposition, drop the code that will not
+  run in the tools at hand, re-express the rest as prompts the available
+  assistant runs. The durable edge is the domain knowledge encoded into the
+  gap the repo cannot fill. A generic reconciliation skill is a commodity.
+  The same skill with the firm's break taxonomy, routing rules, and form
+  mappings inside it is defensible and specific to the desk.
+domain_gap: >
+  The bracketed inserts in the body hold the full text of the 11 break
+  categories, the routing table, the form-mapping table, and the account
+  classification rules. These are the firm-specific elements that must be
+  supplied from the desk's actual operating procedures, the current-year IRS
+  instructions, and the firm's tax guidance. The three-test framework is
+  already complete and tool-agnostic. Filling the inserts turns this from a
+  documentation of a pattern into an executable reference that an analyst or
+  an assistant can apply directly. The full text is in
+  `.claude/skills/tax-ops-domain.md`.
+notes: >
+  Loaded when authoring or adapting any content entry, classifying a break,
+  deciding a remediation path, or mapping an income type to a tax form. The
+  bracketed inserts are the intended terminal form for copy-and-adapt use;
+  they mark where firm specifics get supplied at authoring or use time.
