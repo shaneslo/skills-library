@@ -25,19 +25,42 @@ The question is never which tools we have, but what exists that works. Three tes
 Break: a reconciliation discrepancy to research and resolve. Tie-out: reconcile a statement against an authoritative source. Cost basis: original asset value for tax gain and loss. Remediation path: UI, XML, SQL, or plugin. 1099-DIV/B/INT, 1042-S, FATCA, CRS: the reporting forms and regimes. Full definitions live in `memory/glossary.md`. Full break taxonomy, routing rules, and tax-form mappings live in the domain skill below.
 
 ## Where things live
-- `content/entries/*.yaml` — one asset per file. Schema in `SKILLS_LIBRARY_SPEC.md` section 4 (assets) and section 5 (workflows).
-- `build/build.py` — validates content and compiles the HTML.
-- `build/template.html` — the offline shell. No external dependencies.
-- `dist/skills-library.html` — generated output. Do not hand-edit.
+- `content/entries/*.yaml` — one asset per file, 14 today across two packs. A Data Analytics pack covers metric-movement diagnostics, data-quality profiling, the break-backlog KPI readout, the dashboard brief, the report writer, and an end-to-end diagnostic workflow. A Gainskeeper operations pack covers exception research, gain/loss tie-out, email intake triage, field-status replies, KB review, the break tracker, and work-item routing. `gl-reconciler-break-triage.yaml` is the exemplar every entry matches for shape and depth. Schema in `SKILLS_LIBRARY_SPEC.md` section 4 (assets) and section 5 (workflows).
+- `build/build.py` — validates content, renders each entry, runs the offline check, compiles the HTML. The build reads `content/entries/` and nothing else.
+- `build/template.html` — the offline shell. Inlined CSS and JS, no external dependencies. The build injects entries at the `<!--ENTRIES-->` marker.
+- `dist/skills-library.html` — generated output, gitignored. Do not hand-edit; the next build overwrites it.
+- `tests/test_validate.py` — pytest contract tests, one per validation rule, with a regression case behind each past fix. Run `python -m pytest`.
+- `requirements.txt` (pyyaml, markdown) and `requirements-dev.txt` (adds pytest) — the pinned dependencies.
 - `.claude/skills/tax-ops-domain.md` — break taxonomy, routing rules, tax-form mappings, three-test framework. Load it when authoring or adapting an entry.
-- `.claude/skills/build-pipeline.md` — how to validate and build.
-- `SKILLS_LIBRARY_SPEC.md` — the contract. Section 8 is the quality bar.
+- `.claude/skills/build-pipeline.md` — the content-layer model, the build steps, the ten acceptance criteria.
+- `.claude/commands/*.md` — the `/validate`, `/build`, and `/new-entry` slash commands.
+- `.claude/agents/repo-review-orchestrator.md` — the multi-angle review agent. It keeps its own `memory: project` store under `.claude/`, owned by the agent and separate from the operator memory layer below.
+- `SKILLS_LIBRARY_SPEC.md` — the contract. Section 8 is the quality bar, section 10 the acceptance criteria.
+- `CHANGELOG.md` — what changed, newest first. `TASKS.md` — active work, waiting-on items, someday, and done.
 - `memory/` — operator context, the cold store this file defers to. `memory/README.md` defines the layer and its boundary with the build. `memory/glossary.md` holds full term definitions, `memory/company.md` the environment, `memory/projects/skills-library.md` this repo's dossier. None of it compiles into `dist/`.
 
 ## Build commands
-- `/validate` — check every entry against the schema and the four hard rules. No build.
-- `/build` — validate, compile, confirm the output loads nothing external, report the path.
-- `/new-entry` — scaffold a content entry with every schema field pre-filled.
+The slash commands wrap the script. The script is the source of truth, so either form works.
+- `/validate` or `python build/build.py --check` — check every entry against the schema and the hard rules. No build. A non-zero exit names the file, the field, and the rule.
+- `/build` or `python build/build.py` — validate, compile, run the offline check, write `dist/skills-library.html`. A failed offline check aborts before any file is written.
+- `/new-entry <slug> "<name>"` — scaffold a content entry with every schema field pre-filled.
+- `python -m pytest` — run the validator contract tests. Install deps first with `pip install -r requirements-dev.txt`.
+
+## Adding or changing an entry
+1. Scaffold with `/new-entry`, or copy the exemplar.
+2. Write a tool-agnostic body. Put firm specifics in bracketed `[INSERT: …]` placeholders and pull the real content from `.claude/skills/tax-ops-domain.md`. Open inserts are the intended terminal form for `adapt` and `author-from-spec` entries, not an unfinished state.
+3. Write a substantive `domain_gap` to the section 8 standard: name what the analyst supplies and what changes once it is filled. A one-line gap fails.
+4. Run `/validate`, clear every failure, then `/build`.
+5. Match the exemplar. An entry that cannot pass the three tests visibly is not ready.
+
+## What validation enforces
+- Every required field is present for the entry type. Assets carry the section 4 fields, workflows the section 5 fields.
+- `id` is a stable slug that matches the filename stem and is unique across the library.
+- `tier` is an integer 1 to 4. `stage`, `type`, and `adaptation` hold allowed values only.
+- `core_function` names no tool. A match on sql, xml, plugin, database, connector, runtime, sdk, mcp, api, rest, graphql, endpoint, or cron fails the entry, since the core has not been decomposed.
+- `domain_gap` is present and substantive for every asset.
+- A workflow carries at least one explicit human-sign-off gate, and any workflow with a remediation step must gate it.
+- The compiled HTML loads nothing external and uses no browser storage. The offline scan catches external `src` and `href`, `<link>`, external `<script src>`, `@import`, remote `url()`, and any `localStorage`, `sessionStorage`, `indexedDB`, or cookie use in the page chrome.
 
 ## Writing preferences
 BLUF. Specific over general, decisive. No em dashes. Avoid "not X but Y" constructions. Sentence-case headings. Vary sentence length. End on a fact or a next step, not a summary. Output reads as if a polished professional assembled it.
