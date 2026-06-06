@@ -26,6 +26,7 @@
     --communicate: #4cb782;
     --remediate: #e5a23d;
     --intake: #6cb6ff;
+    --intake-classify: #6cb6ff;
     --radius: 10px;
     --radius-sm: 7px;
     --shadow: 0 8px 30px rgba(0,0,0,0.5);
@@ -204,6 +205,9 @@
   .row:hover { background: var(--surface); border-color: var(--border-2); }
   .row:hover::before { opacity: 1; }
   .row:active { transform: translateY(0.5px); }
+  :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; border-radius: 8px; }
+  .row:focus-visible { background: var(--surface); border-color: var(--border-2); outline-offset: -1px; }
+  .row:focus-visible::before { opacity: 1; }
 
   .gly {
     flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px;
@@ -338,7 +342,7 @@
   </div>
 
   <div class="scrim" id="scrim"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true"></aside>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Asset details" aria-hidden="true" tabindex="-1"></aside>
 
   <div class="offline"><span class="live"></span> Offline · loads nothing external</div>
 
@@ -493,6 +497,9 @@
 
   function rowEl(d) {
     var row = el("div", "row"); row.dataset.id = d.id;
+    row.setAttribute("role", "button");
+    row.tabIndex = 0;
+    row.setAttribute("aria-label", d.name + ", " + TYPES[d.type] + ", " + (STAGES[d.stage] || d.stage));
     var g = el("div", "gly " + d.type, TYPE_GLYPH[d.type]); row.appendChild(g);
     var body = el("div", "body");
     body.appendChild(el("div", "name", d.name));
@@ -507,7 +514,10 @@
     var ch = document.createElement("span"); ch.className = "chevron";
     ch.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>';
     row.appendChild(ch);
-    row.addEventListener("click", function () { openDrawer(d.id); });
+    row.addEventListener("click", function () { openDrawer(d.id, row); });
+    row.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); openDrawer(d.id, row); }
+    });
     return row;
   }
 
@@ -564,14 +574,19 @@
     f.appendChild(v);
     return f;
   }
-  function openDrawer(id) {
+  var lastTrigger = null;
+  function openDrawer(id, trigger) {
     var d = DATA.find(function (x) { return x.id === id; });
     if (!d) return;
+    lastTrigger = trigger || null;
     var dr = $("#drawer"); dr.innerHTML = "";
+    dr.setAttribute("aria-label", d.name);
 
     var top = el("div", "drawer-top");
     top.appendChild(el("span", "id", d.id));
     var x = el("button", "xbtn");
+    x.type = "button";
+    x.setAttribute("aria-label", "Close details");
     x.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>';
     x.addEventListener("click", closeDrawer);
     top.appendChild(x);
@@ -592,9 +607,9 @@
     bdy.appendChild(field("Source", d.source, true));
 
     var foot = el("div", "drawer-foot");
-    var b1 = el("button", "pbtn primary");
+    var b1 = el("button", "pbtn primary"); b1.type = "button";
     b1.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copy entry';
-    var b2 = el("button", "pbtn", "View YAML");
+    var b2 = el("button", "pbtn", "View YAML"); b2.type = "button";
     foot.appendChild(b1); foot.appendChild(b2);
     bdy.appendChild(foot);
 
@@ -602,11 +617,14 @@
 
     dr.classList.add("open"); dr.setAttribute("aria-hidden", "false");
     $("#scrim").classList.add("open");
+    x.focus();
   }
   function closeDrawer() {
     $("#drawer").classList.remove("open");
     $("#drawer").setAttribute("aria-hidden", "true");
     $("#scrim").classList.remove("open");
+    if (lastTrigger && document.body.contains(lastTrigger)) { lastTrigger.focus(); }
+    lastTrigger = null;
   }
 
   // ---- wire up ----
