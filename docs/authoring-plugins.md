@@ -38,10 +38,10 @@ The body follows the frontmatter. Write it tool-agnostic, BLUF, with firm specif
 Add the library metadata as extra frontmatter keys on the same file. Claude Code ignores them; the offline build reads them.
 
 ```yaml
-type: skill | agent | command | workflow
+type: skill | agent | workflow
 stage: <where it sits in the workflow spine>
 tier: 1 | 2 | 3 | 4
-adaptation: adopt | adapt | author-from-spec
+adaptation: use-as-is | adapt | author-from-spec
 source: <repo or origin, with license>
 core_function: <the one job, naming no tool>
 domain_fit: <which priority it serves and how directly>
@@ -49,6 +49,8 @@ domain_gap: <what the analyst supplies and what changes once filled>
 maturity: <provenance and readiness of the source>
 notes: <anything a future author needs>
 ```
+
+A command that orchestrates an end-to-end workflow carries `type: workflow`. A native helper command such as `/validate` or `/build` is tooling, not a catalog asset, so it carries no library `type`.
 
 Two keys carry the weight of review.
 
