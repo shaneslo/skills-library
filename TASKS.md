@@ -2,14 +2,13 @@
 
 ## Active
 
-Each item below now has a GitHub issue home. Work the issue, then check it off here.
+Most items below have a GitHub issue home, shown in parentheses; work the issue, then check it off here. The spec review is an evaluator-agent process task with no code issue.
 
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
-- [ ] **Desk-fit review of the 14-entry packs** (#21) - Data Analytics and Gainskeeper packs against the real operating cadence; hold every entry to the `gl-reconciler-break-triage` exemplar
+- [ ] **Desk-fit review of the content packs** (#21) - Data Analytics and Gainskeeper packs against the real operating cadence; hold every entry to the `gl-reconciler-break-triage` exemplar
 - [ ] **Decide and harvest the next source family** (#22) - GitHub agent patterns, financial-services examples, or document-review workflows
 - [ ] **Finish Track A card polish** (#18) - square `aspect-ratio` cards and the stage-count hero summary never landed; the Track A core shipped in PR #9
 - [ ] **Frontend v2 workflow map** (#19) - inline-SVG read-only map for `tax-break-diagnostic-workflow`
-- [ ] **Reconcile assistant session logs for missing skills** (#14) - confirm each discussed asset is a `content/entries/*.yaml` entry or a tracking issue; PR #15 ships the first five
 
 ## Waiting On
 
@@ -29,7 +28,8 @@ All three resolved 06-03-2026. See the "Decided" block in CHANGELOG.md.
 
 ## Done
 
-- [x] ~~Issue and PR triage~~ (06-06-2026) - closed the two resolved design-call issues (#3, #4), the duplicate missing-skills issue (#16, dup of #14), the superseded frontend mega-plan (#8, Track A core shipped in #9), the conflicting memory-sync PR (#12), and the duplicate-issue PR (#17). Opened #18 to #22 for the remaining frontend, desk-fit, and source-harvest work. PR #7 (period-close workflow) and PR #15 (five missing skills) left open as ready work.
+- [x] ~~Reconcile assistant session logs for missing skills~~ (06-06-2026) - issue #14 closed completed when PR #15 merged the first five repo-native skills (build, validate, new-entry commands and tax-ops domain knowledge). Re-open a tracking issue if later sessions surface more unshipped assets.
+- [x] ~~Issue and PR triage~~ (06-06-2026) - closed the two resolved design-call issues (#3, #4), the duplicate missing-skills issue (#16, dup of #14), the superseded frontend mega-plan (#8, Track A core shipped in #9), the conflicting memory-sync PR (#12), and the duplicate-issue PR (#17). Opened #18 to #22 for the remaining frontend, desk-fit, and source-harvest work. PR #7 (period-close workflow) and PR #15 (five missing skills) were ready at triage time and have since merged to `main`.
 - [x] ~~Resolve the three 05-31 review design calls~~ (06-03-2026) - workflow stage handling (resolved on main by PR #9's Type-axis "Workflows" filter; `stage` is now required, removing the orphaned `data-stage` value), research-inventory criterion (tier now reads from source/maturity, no external file), exemplar terminal form (bracketed inserts are the intended end state, documented in the spec). Bracketed-insert fill task closed by that last call.
 - [x] ~~Initialize Data Analytics v1 pack~~ (06-03-2026) - added six tax-ops-adapted entries from the Data Analytics plugin: metric diagnostics, data quality profiling, break backlog KPI readout, dashboard brief, report writer, and an end-to-end diagnostic workflow
 - [x] ~~Initialize Gainskeeper operations pack~~ (06-03-2026) - added seven entries for exception research, gain/loss tie-out, email intake, field replies, KB review, break trackers, and work-item routing
