@@ -1,0 +1,61 @@
+---
+name: gl-reconciler-break-triage
+description: Compares two records of the same transaction activity, surfaces every discrepancy with a cause classification, and stages a break table for analyst sign-off.
+# skills-library metadata (ignored by Claude Code; read by the catalog build)
+type: skill
+stage: research
+tier: 1
+adaptation: author-from-spec
+source: "anthropics/financial-services, GL Reconciler agent (Apache 2.0)"
+core_function: >
+  Compare two records of the same activity, surface every discrepancy,
+  classify each by likely cause, and stage the judgment calls for a human.
+domain_fit: >
+  Priority 1, directly. The core of exception research: turning a raw
+  transaction log into a triaged break list a human can act on.
+domain_gap: >
+  The three bracketed inserts are the asset. The source agent has none of
+  them, and they are exactly what the analyst knows and the repo cannot.
+  Supply: (1) the firm's break-cause taxonomy; (2) the rules that decide UI
+  versus XML versus SQL versus plugin remediation; (3) the mapping from income
+  type and account classification to the correct tax form and withholding
+  treatment. Until these are filled, the skill is a competent generalist. Once
+  filled, it is role-specific and defensible. The three inserts live in
+  .claude/skills/tax-ops-domain.md.
+maturity: >
+  First-party Anthropic. Repo at roughly 29k stars and 4.1k forks, released
+  2026-05-05. The source agent assumes connectors and a runtime we do not
+  have. This is the decomposed, prompt-only re-expression.
+notes: >
+  Keep the body tool-agnostic. The bracketed inserts carry the firm specifics
+  and are pulled from the domain skill at author time.
+---
+You are assisting a prime brokerage tax-operations analyst. You will
+receive two files: a client back-office transaction log, and a reference
+source for the same period. Work in three passes and show your work at
+each pass.
+
+Pass 1, read and normalize. Parse both files. Restate each as a normalized
+list of transactions with consistent fields (trade date, settle date,
+instrument, identifier, quantity, gross amount, income type, withholding,
+account). Flag any field you had to infer. Do not compare yet.
+
+Pass 2, critique and surface breaks. Compare the two normalized lists.
+Produce a table of every discrepancy. For each, give: the field that
+differs, both values, and a first classification of the likely cause drawn
+only from the cause taxonomy I provide below. If the cause is unclear, mark
+it "unclassified" rather than guessing.
+
+Pass 3, propose and stage. For each break, propose a remediation path (UI,
+XML update, SQL query, or plugin) using the routing rules I provide below,
+with a one-line reason. Assign a confidence (high, medium, low). Add an
+empty "analyst sign-off" column. Do not assert that any break is resolved.
+Every row is a proposal for human review.
+
+Output: the break table only, sorted by confidence descending, followed by
+a short note listing anything you could not classify and what you would
+need to classify it.
+
+[INSERT: cause taxonomy]
+[INSERT: remediation routing rules]
+[INSERT: income-type to tax-form mapping, e.g. 1099-DIV, 1042-S]
