@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills Library</title>
+<style>
+  /* ---- Linear-style design tokens, inlined, no external deps ---- */
+  :root {
+    --bg: #08090a;
+    --bg-grad: #0c0d10;
+    --elev: #0e0e11;
+    --surface: #111113;
+    --surface-2: #161619;
+    --surface-3: #1b1b1f;
+    --border: #1d1d21;
+    --border-2: #27272c;
+    --text: #f7f8f8;
+    --text-2: #d0d2d6;
+    --muted: #8a8f98;
+    --faint: #62666d;
+    --accent: #5e6ad2;
+    --accent-2: #8b93e6;
+    --accent-soft: rgba(94,106,210,0.14);
+    --research: #7c87f0;
+    --communicate: #4cb782;
+    --remediate: #e5a23d;
+    --intake: #6cb6ff;
+    --intake-classify: #6cb6ff;
+    --radius: 10px;
+    --radius-sm: 7px;
+    --shadow: 0 8px 30px rgba(0,0,0,0.5);
+    --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text);
+    background:
+      radial-gradient(900px 380px at 50% -120px, rgba(94,106,210,0.18), transparent 70%),
+      linear-gradient(180deg, var(--bg-grad), var(--bg) 280px);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.01em;
+  }
+  ::selection { background: rgba(94,106,210,0.4); }
+
+  /* scrollbars */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #232328; border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #303036; background-clip: content-box; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; gap: 16px;
+    height: 56px; padding: 0 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,9,10,0.72);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13.5px; letter-spacing: -0.02em; }
+  .logo {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: linear-gradient(150deg, var(--accent-2), var(--accent) 60%, #3b439c);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 8px rgba(94,106,210,0.45);
+    display: grid; place-items: center;
+  }
+  .logo span { width: 8px; height: 8px; border-radius: 2px; background: rgba(255,255,255,0.92); }
+  .brand .sep { color: var(--faint); font-weight: 400; }
+  .brand .crumb { color: var(--muted); font-weight: 500; }
+
+  .search {
+    margin-left: 8px;
+    flex: 0 1 360px;
+    display: flex; align-items: center; gap: 9px;
+    height: 34px; padding: 0 10px 0 11px;
+    border: 1px solid var(--border-2); border-radius: 8px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: text; transition: border-color .15s, background .15s;
+  }
+  .search:focus-within { border-color: #3a3a44; background: var(--surface-2); }
+  .search svg { flex: 0 0 auto; opacity: .75; }
+  .search input {
+    border: 0; outline: 0; background: transparent;
+    color: var(--text); font-family: var(--font); font-size: 13px;
+    width: 100%; letter-spacing: -0.01em;
+  }
+  .search input::placeholder { color: var(--faint); }
+  .kbd {
+    font-family: var(--font); font-size: 11px; color: var(--faint);
+    border: 1px solid var(--border-2); border-radius: 5px;
+    padding: 1px 6px; background: var(--surface-2);
+  }
+  .spacer { flex: 1; }
+  .tbtn {
+    height: 32px; padding: 0 12px; border-radius: 8px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--text-2); font: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background .15s, color .15s;
+  }
+  .tbtn:hover { background: var(--surface-2); color: var(--text); }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(150deg, #6f78d6, #3b439c);
+    display: grid; place-items: center; font-size: 11px; font-weight: 600; color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  /* ---------- shell ---------- */
+  .shell { display: grid; grid-template-columns: 244px 1fr; align-items: start; }
+  @media (max-width: 880px) { .shell { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+  .sidebar {
+    position: sticky; top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    padding: 18px 12px;
+    border-right: 1px solid var(--border);
+  }
+  .nav-group { margin-bottom: 18px; }
+  .nav-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--faint); padding: 0 10px; margin: 0 0 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; text-align: left;
+    padding: 7px 10px; border-radius: 7px;
+    border: 0; background: transparent; cursor: pointer;
+    color: var(--text-2); font: inherit; font-size: 13px; font-weight: 500;
+    transition: background .12s, color .12s;
+  }
+  .nav-item:hover { background: var(--surface-2); color: var(--text); }
+  .nav-item.active { background: var(--accent-soft); color: #fff; }
+  .nav-item.active .dot { box-shadow: 0 0 0 3px rgba(94,106,210,0.18); }
+  .nav-item .count { margin-left: auto; font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .nav-item.active .count { color: var(--accent-2); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: 0 0 auto; }
+  .dot.research { background: var(--research); }
+  .dot.communicate { background: var(--communicate); }
+  .dot.remediate { background: var(--remediate); }
+  .dot.intake-classify { background: var(--intake); }
+
+  /* ---------- main ---------- */
+  .main { min-width: 0; padding: 30px 30px 80px; max-width: 1080px; }
+  .page-head { margin-bottom: 22px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--accent-2); margin: 0 0 10px; }
+  h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 8px; }
+  .lede { color: var(--muted); font-size: 14px; max-width: 620px; line-height: 1.55; margin: 0 0 18px; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat {
+    border: 1px solid var(--border); border-radius: 9px;
+    background: linear-gradient(180deg, var(--surface), var(--elev));
+    padding: 11px 14px; min-width: 96px;
+  }
+  .stat .n { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 10px;
+    margin: 26px 0 6px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar h2 { font-size: 13px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .toolbar .res { color: var(--faint); font-size: 12.5px; font-weight: 500; }
+  .clear {
+    margin-left: auto; font-size: 12.5px; color: var(--muted);
+    background: transparent; border: 0; cursor: pointer; font: inherit; font-weight: 500;
+    padding: 5px 8px; border-radius: 6px; visibility: hidden;
+  }
+  .clear:hover { background: var(--surface-2); color: var(--text); }
+  .clear.show { visibility: visible; }
+
+  /* ---------- list ---------- */
+  .group-head {
+    display: flex; align-items: center; gap: 9px;
+    margin: 24px 0 4px; padding: 0 6px;
+  }
+  .group-head .gname { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--text-2); }
+  .group-head .gcount {
+    font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums;
+    border: 1px solid var(--border-2); border-radius: 20px; padding: 0 7px; line-height: 17px;
+  }
+  .group-head .gline { flex: 1; height: 1px; background: var(--border); }
+
+  .row {
+    position: relative; display: flex; align-items: center; gap: 14px;
+    padding: 13px 16px 13px 18px; cursor: pointer;
+    border-radius: 9px; border: 1px solid transparent;
+    transition: background .12s, border-color .12s, transform .04s;
+  }
+  .row::before {
+    content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px;
+    border-radius: 2px; background: var(--accent); opacity: 0; transition: opacity .12s;
+  }
+  .row:hover { background: var(--surface); border-color: var(--border-2); }
+  .row:hover::before { opacity: 1; }
+  .row:active { transform: translateY(0.5px); }
+  :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; border-radius: 8px; }
+  .row:focus-visible { background: var(--surface); border-color: var(--border-2); outline-offset: -1px; }
+  .row:focus-visible::before { opacity: 1; }
+
+  .gly {
+    flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px;
+    display: grid; place-items: center; font-size: 13px;
+    border: 1px solid var(--border-2); background: var(--surface-2); color: var(--text-2);
+  }
+  .gly.agent { color: var(--accent-2); border-color: rgba(94,106,210,0.4); background: rgba(94,106,210,0.1); }
+  .gly.workflow { color: var(--communicate); border-color: rgba(76,183,130,0.35); background: rgba(76,183,130,0.08); }
+
+  .row .body { min-width: 0; flex: 1; }
+  .row .name { font-size: 13.5px; font-weight: 550; letter-spacing: -0.01em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .desc { font-size: 12.5px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+
+  .chips { display: flex; align-items: center; gap: 7px; flex: 0 0 auto; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px; padding: 0 9px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+    border: 1px solid var(--border-2); background: var(--surface-2); color: var(--text-2);
+    white-space: nowrap;
+  }
+  .chip .cdot { width: 6px; height: 6px; border-radius: 50%; }
+  .chip.tier { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chip.adapt { color: var(--faint); }
+  .chevron { flex: 0 0 auto; color: var(--faint); opacity: 0; transition: opacity .12s, transform .12s; }
+  .row:hover .chevron { opacity: 1; transform: translateX(2px); }
+  @media (max-width: 720px) { .row .desc { display: none; } .chips .adapt, .chips .type { display: none; } }
+
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; }
+  .empty .big { font-size: 15px; color: var(--text-2); margin-bottom: 6px; font-weight: 500; }
+
+  /* ---------- drawer ---------- */
+  .scrim { position: fixed; inset: 0; background: rgba(4,4,6,0.55); opacity: 0; pointer-events: none; transition: opacity .18s; z-index: 50; backdrop-filter: blur(2px); }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed; top: 0; right: 0; z-index: 60;
+    width: min(520px, 92vw); height: 100%;
+    background: var(--elev); border-left: 1px solid var(--border-2);
+    box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+    transform: translateX(102%); transition: transform .26s cubic-bezier(.22,.61,.36,1);
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-top { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
+  .drawer-top .id { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+  .xbtn { margin-left: auto; width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-2); color: var(--muted); cursor: pointer; display: grid; place-items: center; }
+  .xbtn:hover { color: var(--text); background: var(--surface-3); }
+  .drawer-body { overflow-y: auto; padding: 22px 22px 40px; }
+  .drawer-body h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.025em; margin: 0 0 12px; line-height: 1.25; }
+  .drawer .chips { flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .field { margin-bottom: 20px; }
+  .field .k { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); margin: 0 0 7px; }
+  .field .v { font-size: 13.5px; line-height: 1.6; color: var(--text-2); margin: 0; }
+  .field .v.mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .drawer-foot { margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+  .pbtn {
+    flex: 1; height: 38px; border-radius: 8px; border: 1px solid var(--border-2);
+    background: var(--surface-2); color: var(--text); font: inherit; font-size: 13px; font-weight: 550; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .pbtn:hover { background: var(--surface-3); }
+  .pbtn.primary { background: linear-gradient(180deg, #6b76dd, var(--accent)); border-color: transparent; box-shadow: 0 2px 12px rgba(94,106,210,0.4); }
+  .pbtn.primary:hover { filter: brightness(1.07); }
+
+  /* footer badge */
+  .offline {
+    position: fixed; left: 18px; bottom: 16px; z-index: 30;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11.5px; color: var(--faint); font-weight: 500;
+    border: 1px solid var(--border); border-radius: 20px; padding: 5px 11px;
+    background: rgba(14,14,17,0.8); backdrop-filter: blur(8px);
+  }
+  .offline .live { width: 6px; height: 6px; border-radius: 50%; background: var(--communicate); box-shadow: 0 0 8px var(--communicate); }
+  @media (max-width: 880px) { .offline { display: none; } }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"><span></span></div>
+      Skills Library
+      <span class="sep">/</span>
+      <span class="crumb">Tax operations</span>
+    </div>
+    <label class="search" for="q">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="Search assets, functions, sources…" autocomplete="off" spellcheck="false">
+      <span class="kbd">⌘K</span>
+    </label>
+    <div class="spacer"></div>
+    <button class="tbtn">Docs</button>
+    <button class="tbtn">Build</button>
+    <div class="avatar">SS</div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="nav-group">
+        <p class="nav-label">Library</p>
+        <button class="nav-item active" data-facet="all" data-value="all">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          All assets <span class="count" data-count="all">14</span>
+        </button>
+      </div>
+      <div class="nav-group" id="nav-stage">
+        <p class="nav-label">Stage</p>
+      </div>
+      <div class="nav-group" id="nav-type">
+        <p class="nav-label">Type</p>
+      </div>
+      <div class="nav-group" id="nav-pack">
+        <p class="nav-label">Pack</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-head">
+        <p class="eyebrow">PRIME BROKERAGE · TAX REPORTING</p>
+        <h1>Tax-ops skills library</h1>
+        <p class="lede">A copy-and-adapt catalog of prompts, skills, agents, and workflows. Every asset is decomposed to its core function and re-expressed tool-agnostic, with the domain gap named.</p>
+        <div class="stats" id="stats"></div>
+      </div>
+
+      <div class="toolbar">
+        <h2 id="view-title">All assets</h2>
+        <span class="res" id="res-count"></span>
+        <button class="clear" id="clear">Reset filters</button>
+      </div>
+
+      <div id="list"></div>
+    </main>
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Asset details" aria-hidden="true" tabindex="-1"></aside>
+
+  <div class="offline"><span class="live"></span> Offline · loads nothing external</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STAGES = {
+    "research": "Research",
+    "intake-classify": "Intake & classify",
+    "communicate": "Communicate",
+    "remediate": "Remediate"
+  };
+  var TYPES = { "skill": "Skill", "agent": "Agent", "workflow": "Workflow" };
+  var TYPE_GLYPH = { "skill": "◆", "agent": "✦", "workflow": "⇄" };
+
+  var DATA = [
+    { id:"gl-reconciler-break-triage", name:"Transaction-log break triage (GL Reconciler, decomposed)", type:"skill", stage:"research", tier:1, adaptation:"author-from-spec", pack:"Gainskeeper operations",
+      source:"anthropics/financial-services, GL Reconciler agent (Apache 2.0)",
+      core:"Compare two records of the same activity, surface every discrepancy, classify each by likely cause, and stage the judgment calls for a human.",
+      fit:"Priority 1, directly. The core of exception research: turning a raw transaction log into a triaged break list a human can act on." },
+    { id:"gainskeeper-exception-research-agent", name:"Gainskeeper exception research agent", type:"agent", stage:"research", tier:1, adaptation:"author-from-spec", pack:"Gainskeeper operations",
+      source:"OpenAI Data Analytics and Anthropic GL Reconciler patterns, adapted for Gainskeeper exception research",
+      core:"Investigate an exception from source records, identify the likely cause, collect evidence, and stage a human decision.",
+      fit:"Priority 1, directly. This is the main desk job: gain and loss exceptions, tax-lot questions, breaks, reconciliation gaps, and research packets from exported records." },
+    { id:"gain-loss-tieout-analyst", name:"Gain and loss tie-out analyst", type:"skill", stage:"research", tier:1, adaptation:"author-from-spec", pack:"Gainskeeper operations",
+      source:"Anthropic financial-services GL Reconciler pattern plus OpenAI Data Analytics validation patterns",
+      core:"Reconcile gain and loss records across sources, explain the variance, and identify the record-level evidence needed for review.",
+      fit:"Priority 1, directly. Cost basis, proceeds, holding period, wash-sale treatment, and covered status are central to gain and loss reporting." },
+    { id:"tax-document-kb-reviewer", name:"Tax document and KB reviewer", type:"skill", stage:"research", tier:1, adaptation:"adapt", pack:"Gainskeeper operations",
+      source:"OpenAI Google Drive and Google Docs plugin patterns for document discovery, summary, and careful editing",
+      core:"Read a policy, statement, tax document, or knowledge article and extract the facts that control an operational decision.",
+      fit:"Priority 2, strongly. The role depends on interpreting KB articles, client statements, tax packages, issuer notes, and internal procedure documents." },
+    { id:"ops-email-intake-triage", name:"Ops email intake triage", type:"skill", stage:"intake-classify", tier:1, adaptation:"adapt", pack:"Gainskeeper operations",
+      source:"OpenAI Gmail plugin, inbox triage and thread-summary patterns",
+      core:"Classify inbound messages by urgency, ownership, evidence needed, and next action without changing the underlying mailbox.",
+      fit:"Priority 2, strongly. Many tax-ops issues arrive by email and need routing before research starts." },
+    { id:"work-item-routing-control", name:"Work item routing control", type:"skill", stage:"intake-classify", tier:1, adaptation:"adapt", pack:"Gainskeeper operations",
+      source:"OpenAI Linear plugin issue-management pattern, adapted to enterprise operations work queues",
+      core:"Convert vague work items into clear cases with owner, priority, status, evidence, risk, and acceptance criteria.",
+      fit:"Priority 2, strongly. Team adoption needs repeatable issue shapes for manual processes, AI-assisted research, and exception queue hygiene." },
+    { id:"break-tracker-sheet-maintainer", name:"Break tracker sheet maintainer", type:"skill", stage:"remediate", tier:1, adaptation:"adapt", pack:"Gainskeeper operations",
+      source:"OpenAI Google Sheets plugin and Data Analytics quality-check patterns",
+      core:"Turn a tracker into a clean operating table with stable fields, clear status, accountable owners, and review-ready exceptions.",
+      fit:"Priority 2, strongly. Many manual tax-ops processes live in trackers before they become formal queue or reporting work." },
+    { id:"field-status-reply-drafter", name:"Field status reply drafter", type:"skill", stage:"communicate", tier:1, adaptation:"adapt", pack:"Gainskeeper operations",
+      source:"OpenAI Gmail plugin, reply drafting and thread-summary patterns",
+      core:"Convert issue evidence into a clear status reply with decisions, blockers, owners, timing, and next action.",
+      fit:"Priority 2, strongly. Field and leadership communication is a daily part of tax-ops exception handling." },
+    { id:"tax-break-diagnostic-workflow", name:"Tax break diagnostic workflow", type:"workflow", stage:"research", tier:1, adaptation:"orchestration", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin skills, adapted workflow pack",
+      core:"Combine data quality, metric diagnostics, break triage, KPI readout, and report writing into one analyst workflow with human sign-off gates.",
+      fit:"Priority 1, directly. The end-to-end path for an inbound tax-reporting issue, from raw export to a reviewed, communicated result." },
+    { id:"tax-metric-movement-diagnostics", name:"Tax metric movement diagnostics", type:"skill", stage:"research", tier:1, adaptation:"adapt", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin, metric-diagnostics skill",
+      core:"Reproduce a measured change, choose the right comparison, size the drivers, and state what is verified, likely, unresolved, and worth doing next.",
+      fit:"Priority 1, directly. Adapts metric diagnostics to exception volume, break aging, withholding variance, cost-basis differences, corrected-form risk, and close-readiness signals." },
+    { id:"tax-data-quality-profiler", name:"Tax data quality profiler", type:"skill", stage:"research", tier:1, adaptation:"adapt", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin, analyze-data-quality skill",
+      core:"Profile a dataset against its intended grain, find trust failures, explain the analytical risk, and propose the smallest useful control.",
+      fit:"Priority 1, directly. Tax reporting depends on trusted grain, dates, account documentation, identifiers, income classification, withholding, and basis." },
+    { id:"break-backlog-kpi-readout", name:"Break backlog KPI readout", type:"skill", stage:"communicate", tier:1, adaptation:"adapt", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin, kpi-reporting skill",
+      core:"Turn measured operating performance into a leadership-ready status readout with definitions, comparisons, validated drivers, caveats, and next actions.",
+      fit:"Priority 1, directly. Packages break backlog, aging, close readiness, client impact, withholding exposure, and corrected-form risk for field and leadership communication." },
+    { id:"tax-ops-dashboard-brief", name:"Tax-ops dashboard brief", type:"skill", stage:"communicate", tier:1, adaptation:"adapt", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin, build-dashboard skill",
+      core:"Define a monitoring surface around the audience question, metric model, source checks, layout, filters, validation, and handoff.",
+      fit:"Priority 2, strongly. A dashboard brief turns recurring break, close, withholding, cost-basis, and client-impact tracking into a repeatable view." },
+    { id:"tax-ops-report-writer", name:"Tax-ops report writer", type:"skill", stage:"communicate", tier:1, adaptation:"adapt", pack:"Data Analytics",
+      source:"OpenAI Data Analytics plugin, build-report skill",
+      core:"Build an answer-first analytical report with evidence, definitions, caveats, visuals or tables, and a decision-useful next step.",
+      fit:"Priority 2, strongly. Tax ops often needs a polished explanation of a break cluster, close status, client-impact issue, withholding variance, or corrected-form risk." }
+  ];
+
+  var PACK_ORDER = ["Gainskeeper operations", "Data Analytics"];
+
+  // ---- state ----
+  var state = { facet: "all", value: "all", q: "" };
+
+  // ---- helpers ----
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" })[c]; }); }
+  function countBy(key) {
+    var m = {}; DATA.forEach(function (d) { m[d[key]] = (m[d[key]] || 0) + 1; }); return m;
+  }
+
+  // ---- build sidebar ----
+  function navButton(facet, value, label, count, dotCls) {
+    var b = el("button", "nav-item");
+    b.dataset.facet = facet; b.dataset.value = value;
+    if (dotCls) { var d = el("span", "dot " + dotCls); b.appendChild(d); }
+    b.appendChild(document.createTextNode(label));
+    var c = el("span", "count", String(count)); b.appendChild(c);
+    b.addEventListener("click", function () { setFacet(facet, value); });
+    return b;
+  }
+  function buildNav() {
+    var sc = countBy("stage");
+    Object.keys(STAGES).forEach(function (k) {
+      if (sc[k]) $("#nav-stage").appendChild(navButton("stage", k, STAGES[k], sc[k], k));
+    });
+    var tc = countBy("type");
+    ["skill","agent","workflow"].forEach(function (k) {
+      if (tc[k]) $("#nav-type").appendChild(navButton("type", k, TYPES[k], tc[k], null));
+    });
+    var pc = countBy("pack");
+    PACK_ORDER.forEach(function (k) {
+      if (pc[k]) $("#nav-pack").appendChild(navButton("pack", k, k, pc[k], null));
+    });
+  }
+
+  // ---- stats ----
+  function buildStats() {
+    var pc = countBy("pack"), tc = countBy("type");
+    var items = [
+      [DATA.length, "Assets"],
+      [Object.keys(pc).length, "Packs"],
+      [tc.skill || 0, "Skills"],
+      [(tc.agent || 0), "Agents"],
+      [(tc.workflow || 0), "Workflows"],
+      ["1", "Top tier"]
+    ];
+    var wrap = $("#stats");
+    items.forEach(function (it) {
+      var s = el("div", "stat");
+      s.appendChild(el("div", "n", String(it[0])));
+      s.appendChild(el("div", "l", it[1]));
+      wrap.appendChild(s);
+    });
+  }
+
+  // ---- chips ----
+  function stageChip(stage) {
+    var c = el("span", "chip stage");
+    var d = el("span", "cdot"); d.style.background = "var(--" + stage + ")"; c.appendChild(d);
+    c.appendChild(document.createTextNode(STAGES[stage] || stage));
+    return c;
+  }
+  function chip(cls, txt) { return el("span", "chip " + cls, txt); }
+
+  // ---- list ----
+  function matches(d) {
+    if (state.facet !== "all" && d[state.facet] !== state.value) return false;
+    if (state.q) {
+      var hay = (d.name + " " + d.core + " " + d.fit + " " + d.source + " " + d.id + " " + d.pack).toLowerCase();
+      if (hay.indexOf(state.q) === -1) return false;
+    }
+    return true;
+  }
+
+  function rowEl(d) {
+    var row = el("div", "row"); row.dataset.id = d.id;
+    row.setAttribute("role", "button");
+    row.tabIndex = 0;
+    row.setAttribute("aria-label", d.name + ", " + TYPES[d.type] + ", " + (STAGES[d.stage] || d.stage));
+    var g = el("div", "gly " + d.type, TYPE_GLYPH[d.type]); row.appendChild(g);
+    var body = el("div", "body");
+    body.appendChild(el("div", "name", d.name));
+    body.appendChild(el("div", "desc", d.core));
+    row.appendChild(body);
+    var chips = el("div", "chips");
+    chips.appendChild(stageChip(d.stage));
+    chips.appendChild(chip("type", TYPES[d.type]));
+    chips.appendChild(chip("tier", "Tier " + d.tier));
+    chips.appendChild(chip("adapt", d.adaptation));
+    row.appendChild(chips);
+    var ch = document.createElement("span"); ch.className = "chevron";
+    ch.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>';
+    row.appendChild(ch);
+    row.addEventListener("click", function () { openDrawer(d.id, row); });
+    row.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); openDrawer(d.id, row); }
+    });
+    return row;
+  }
+
+  function render() {
+    var list = $("#list"); list.innerHTML = "";
+    var rows = DATA.filter(matches);
+
+    $("#res-count").textContent = rows.length + (rows.length === 1 ? " asset" : " assets");
+    var title = "All assets";
+    if (state.facet === "stage") title = STAGES[state.value];
+    else if (state.facet === "type") title = TYPES[state.value] + "s";
+    else if (state.facet === "pack") title = state.value;
+    $("#view-title").textContent = state.q ? "Search results" : title;
+
+    var dirty = state.facet !== "all" || state.q !== "";
+    $("#clear").classList.toggle("show", dirty);
+
+    if (!rows.length) {
+      var e = el("div", "empty");
+      e.appendChild(el("div", "big", "No assets match"));
+      e.appendChild(el("div", null, "Try a different term or reset the filters."));
+      list.appendChild(e);
+      return;
+    }
+
+    // group by pack, preserving order
+    PACK_ORDER.forEach(function (pack) {
+      var inPack = rows.filter(function (r) { return r.pack === pack; });
+      if (!inPack.length) return;
+      var gh = el("div", "group-head");
+      gh.appendChild(el("span", "gname", pack));
+      gh.appendChild(el("span", "gcount", String(inPack.length)));
+      gh.appendChild(el("span", "gline"));
+      list.appendChild(gh);
+      inPack.forEach(function (d) { list.appendChild(rowEl(d)); });
+    });
+  }
+
+  function setFacet(facet, value) {
+    state.facet = facet; state.value = value;
+    var items = document.querySelectorAll(".nav-item");
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      it.classList.toggle("active", it.dataset.facet === facet && it.dataset.value === value);
+    }
+    render();
+  }
+
+  // ---- drawer ----
+  function field(label, value, mono) {
+    var f = el("div", "field");
+    f.appendChild(el("p", "k", label));
+    var v = el("p", "v" + (mono ? " mono" : ""), value);
+    f.appendChild(v);
+    return f;
+  }
+  var lastTrigger = null;
+  function openDrawer(id, trigger) {
+    var d = DATA.find(function (x) { return x.id === id; });
+    if (!d) return;
+    lastTrigger = trigger || null;
+    var dr = $("#drawer"); dr.innerHTML = "";
+    dr.setAttribute("aria-label", d.name);
+
+    var top = el("div", "drawer-top");
+    top.appendChild(el("span", "id", d.id));
+    var x = el("button", "xbtn");
+    x.type = "button";
+    x.setAttribute("aria-label", "Close details");
+    x.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+    x.addEventListener("click", closeDrawer);
+    top.appendChild(x);
+    dr.appendChild(top);
+
+    var bdy = el("div", "drawer-body");
+    bdy.appendChild(el("h3", null, d.name));
+    var chips = el("div", "chips");
+    chips.appendChild(stageChip(d.stage));
+    chips.appendChild(chip("type", TYPES[d.type]));
+    chips.appendChild(chip("tier", "Tier " + d.tier));
+    chips.appendChild(chip("adapt", d.adaptation));
+    chips.appendChild(chip("", d.pack));
+    bdy.appendChild(chips);
+
+    bdy.appendChild(field("Core function", d.core));
+    bdy.appendChild(field("Domain fit", d.fit));
+    bdy.appendChild(field("Source", d.source, true));
+
+    var foot = el("div", "drawer-foot");
+    var b1 = el("button", "pbtn primary"); b1.type = "button";
+    b1.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copy entry';
+    var b2 = el("button", "pbtn", "View YAML"); b2.type = "button";
+    foot.appendChild(b1); foot.appendChild(b2);
+    bdy.appendChild(foot);
+
+    dr.appendChild(bdy);
+
+    dr.classList.add("open"); dr.setAttribute("aria-hidden", "false");
+    $("#scrim").classList.add("open");
+    x.focus();
+  }
+  function closeDrawer() {
+    $("#drawer").classList.remove("open");
+    $("#drawer").setAttribute("aria-hidden", "true");
+    $("#scrim").classList.remove("open");
+    if (lastTrigger && document.body.contains(lastTrigger)) { lastTrigger.focus(); }
+    lastTrigger = null;
+  }
+
+  // ---- wire up ----
+  buildNav();
+  buildStats();
+  render();
+
+  var q = $("#q");
+  q.addEventListener("input", function () { state.q = q.value.trim().toLowerCase(); render(); });
+  $("#clear").addEventListener("click", function () { q.value = ""; state.q = ""; setFacet("all", "all"); });
+  $("#scrim").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); q.focus(); q.select(); }
+    if (e.key === "Escape") { if ($("#drawer").classList.contains("open")) closeDrawer(); else if (document.activeElement === q) { q.blur(); } }
+  });
+})();
+</script>
+</body>
+</html>
