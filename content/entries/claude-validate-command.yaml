@@ -1,0 +1,56 @@
+id: claude-validate-command
+name: Content validation command (Claude Code)
+type: skill
+stage: communicate
+tier: 1
+source: "skills-library repository, .claude/commands/validate.md"
+core_function: >
+  Check structured content against a schema and a set of hard rules,
+  reporting every failure by file, field, and rule before any artifact
+  is built.
+domain_fit: >
+  Priority 2, supporting. Quality gating for the library. Prevents invalid
+  or incomplete entries from reaching the compiled artifact and provides
+  clear diagnostic output for rapid fixes.
+adaptation: use-as-is
+maturity: >
+  First-party, built for this repository. Wraps the Python validation
+  script with clear step-by-step instructions and failure-reporting logic.
+  In active use for every library build cycle.
+body: |
+  Validate the content library and report. Do not build.
+
+  Steps:
+
+  1. Run `python build/build.py --check` from the repo root.
+  2. Read `content/entries/` so you can point to the exact file and field
+     for any failure the script reports.
+  3. Confirm the four hard rules hold for every entry:
+     - All required schema fields are present for the entry type. Assets
+       follow `SKILLS_LIBRARY_SPEC.md` section 4; workflows follow section 5.
+     - `core_function` names no tool. A database, a language runtime, or a
+       connector in `core_function` is a failure; the core has not been
+       decomposed.
+     - `domain_gap` is present and substantive for every finance asset. A
+       blank or one-line note is a failure.
+     - Every workflow with a remediation step carries an explicit
+       human-sign-off gate.
+  4. Output a pass or fail report. Open with one line: PASS, or FAIL with
+     the issue count. For each failure give the file, the field, and the
+     rule it broke. State passes as a count.
+  5. Fail loudly. If anything fails, say so first, in plain words, before
+     the detail. Do not soften it and do not bury it.
+
+  A non-zero exit blocks the build until every failure clears. If the
+  report is clean, say the library is ready to build.
+domain_gap: >
+  This skill is repository-specific and carries the four validation rules
+  that matter to this library: schema completeness, tool-agnostic core
+  functions, substantive domain gaps, and workflow sign-off gates. The
+  rules are hardcoded to the tax-ops use case. Adapting to a different
+  domain means changing the rules to match that domain's quality bar and
+  updating the schema reference in step 3.
+notes: >
+  Invoked as `/validate` in Claude Code. The slash command wrapper loads
+  this skill text and executes the steps. The underlying script is
+  `build/build.py --check`.
