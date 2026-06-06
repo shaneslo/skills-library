@@ -1,0 +1,6 @@
+{
+  "name": "gainskeeper-operations",
+  "version": "0.1.0",
+  "description": "Exception research, gain/loss tie-out, transaction-log break triage, email/work-item intake routing, and field-status communication for prime-brokerage tax operations.",
+  "author": { "name": "skills-library" }
+}

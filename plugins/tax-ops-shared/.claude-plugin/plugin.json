@@ -1,0 +1,6 @@
+{
+  "name": "tax-ops-shared",
+  "version": "0.1.0",
+  "description": "Shared tax-ops domain knowledge (break taxonomy, routing rules, tax-form mappings) plus the validate/build/new-entry authoring commands.",
+  "author": { "name": "skills-library" }
+}

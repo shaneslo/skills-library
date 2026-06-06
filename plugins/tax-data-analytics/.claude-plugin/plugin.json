@@ -1,0 +1,6 @@
+{
+  "name": "tax-data-analytics",
+  "version": "0.1.0",
+  "description": "Metric-movement diagnostics, data-quality profiling, KPI readouts, dashboard briefs, report writing, and the end-to-end break diagnostic workflow.",
+  "author": { "name": "skills-library" }
+}
