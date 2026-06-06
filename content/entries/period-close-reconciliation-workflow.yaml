@@ -1,0 +1,97 @@
+id: period-close-reconciliation-workflow
+name: Period-close reconciliation workflow
+type: workflow
+stage: research
+tier: 1
+source: "Anthropic GL Reconciler decomposition and OpenAI Data Analytics patterns, assembled into a period-close tie-out runbook"
+domain_fit: >
+  Priority 1, directly. Tie-out is the core desk activity at every period
+  boundary. This runbook assembles source profiling, balance and activity
+  reconciliation, break triage, driver diagnostics, remediation routing, and
+  close communication into one ordered pass, so a month-end, quarter-end, or
+  pre-filing close runs the same defensible way each time.
+maturity: >
+  Author-from-spec workflow built from first-party patterns and the repo's
+  tax-ops domain layer. It is prompt-only and assumes exported records,
+  statements, and tax-engine output, not live system access. It reuses the
+  library's existing single-task assets as its steps rather than restating them.
+trigger: >
+  A month-end, quarter-end, or year-end close; a pre-filing tie-out checkpoint
+  before a 1099 or 1042-S run; or a request to certify a period reconciled for
+  the field or leadership.
+steps:
+  - title: Scope the close and inventory sources
+    prompt: |
+      Frame the close before any tie-out. State the accounts and entities in scope, the period and its cutoff dates, and every source that will be reconciled: the back-office transaction log, the custodian or depository record, the tax engine, and the relevant client statements. For each source, note its grain, its as-of timestamp, and its authority for each figure (which source wins for quantity, for cash, for income type, for withholding). List what is missing before you start.
+    output: >
+      A close scope sheet naming accounts, period, cutoff, sources, the
+      authority hierarchy per field, and the gaps to chase first.
+  - title: Profile source fitness before tie-out
+    asset: tax-data-quality-profiler
+    prompt: |
+      Profile each in-scope source against the grain it claims. Flag freshness, completeness, duplicate records, identifier integrity, date and cutoff consistency, account-documentation status, income-classification, withholding, and cost-basis fields that could move the conclusion. A tie-out built on a stale or partial extract is worse than no tie-out, so surface the source defects first.
+    output: >
+      A dataset fitness finding per source, with severity and the caveats that
+      qualify every number downstream.
+  - title: Tie out balances and activity
+    prompt: |
+      Reconcile the transaction log against the authoritative source for the period. Match on instrument, identifier, date, quantity, and cash. Quantify the net tie-out gap per account and per tax form, and split it into matched, matched-with-difference, source-only, and log-only. Do not classify causes yet. Show the gap as a number before it becomes a story.
+    output: >
+      A tie-out summary: net gap per account and per form, with the matched and
+      unmatched populations sized.
+  - title: Triage the breaks
+    asset: gl-reconciler-break-triage
+    prompt: |
+      Take the unmatched and matched-with-difference populations. Classify every discrepancy against the break taxonomy. For each, give the field that differs, both values with their source, the likely cause, and a confidence. Mark anything unclear as unclassified rather than guessing.
+    output: >
+      A break table with cause, evidence, both source values, confidence, and an
+      analyst sign-off column.
+  - title: Diagnose drivers and movement
+    asset: tax-metric-movement-diagnostics
+    prompt: |
+      Decompose the net close gap by tax form, break cause, income type, account documentation status, security, and account. Separate the drivers you have evidenced from the ones you suspect. Name the largest contributors and the single piece of evidence that would confirm or reject each.
+    output: >
+      A driver table with each contribution sized, its confidence, its caveat,
+      and the next validation step.
+  - title: Stage remediation by routing rules
+    asset: gl-reconciler-break-triage
+    prompt: |
+      For each verified or likely break group, choose the remediation path with the smallest blast radius that does the job, under the routing rules: read-only first, then UI, then XML update, then plugin, then write query. When a class of transactions breaks the same way through static data, stage one account-level fix rather than a patch per transaction. State blast radius, control need, rollback consideration, and whether the recommendation is ready to execute.
+    output: >
+      A remediation staging table grouped by path, with account-level static
+      fixes called out, ready for change-control review.
+  - title: Confirm filing readiness
+    prompt: |
+      Check the period against its reporting obligations before it closes. Confirm withholding ties to the documentation: 24% backup withholding on a B-notice, a missing or incorrect TIN, or a presumed US payee with no valid documentation; 30% NRA default reduced to a treaty rate only on a valid claim; chapter 4 where documentation is missing. Confirm every reportable item maps to a form across the 1099 series and 1042-S. Flag any post-period issuer reclass or amended document as corrected-form risk, since a 1099 or 1042-S correction may follow. List the open items that block certifying the period.
+    output: >
+      A filing-readiness checklist: withholding tied to documentation, form
+      mapping complete, corrected-form watch list, and the blockers that remain.
+  - title: Communicate close status
+    asset: break-backlog-kpi-readout
+    prompt: |
+      Convert the close into a status note for the field and leadership. Lead with whether the period is reconciled, then the residual gap, its drivers, the open remediation items with owners, the corrected-form watch, and the next checkpoint. Keep it answer-first and source-backed. State plainly what is certified and what is still open.
+    output: >
+      A close status note and KPI scorecard suitable for an operating review.
+gates:
+  - >
+    The analyst signs off the tie-out summary before any break is treated as
+    confirmed or any gap is reported as explained.
+  - >
+    The change-control owner signs off before any write query, bulk XML message,
+    plugin run, or account-level static-data change is executed.
+  - >
+    The communication owner approves client-facing or leadership-facing close
+    language whenever corrected-form, withholding, or regulatory risk is named.
+  - >
+    The period is not certified reconciled until every residual gap is either
+    explained with evidence or accepted with a named sign-off.
+output: >
+  A reconciled close package: a source-fitness finding, a tie-out summary, a
+  triaged break table, a sized driver table, a staged remediation plan, a
+  filing-readiness checklist, and a close status note ready for review.
+notes: >
+  This workflow chains the library's single-task assets into a close runbook
+  rather than restating them. The sign-off gates are part of the close, not
+  optional polish: nothing certifies a period reconciled except a human who
+  put their name on it. Confirm the withholding rates and form mappings against
+  the current-year IRS instructions each filing season.
