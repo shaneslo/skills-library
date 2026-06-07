@@ -1,0 +1,21 @@
+{
+  "name": "tax-ops-skills-library",
+  "owner": { "name": "skills-library" },
+  "plugins": [
+    {
+      "name": "gainskeeper-operations",
+      "source": "./plugins/gainskeeper-operations",
+      "description": "Exception research, gain/loss tie-out, transaction-log break triage, email/work-item intake routing, and field-status communication for prime-brokerage tax operations."
+    },
+    {
+      "name": "tax-data-analytics",
+      "source": "./plugins/tax-data-analytics",
+      "description": "Metric-movement diagnostics, data-quality profiling, KPI readouts, dashboard briefs, report writing, and the end-to-end break diagnostic workflow."
+    },
+    {
+      "name": "tax-ops-shared",
+      "source": "./plugins/tax-ops-shared",
+      "description": "Shared tax-ops domain knowledge (break taxonomy, routing rules, tax-form mappings) plus the validate/build/new-entry authoring commands."
+    }
+  ]
+}
