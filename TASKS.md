@@ -14,6 +14,7 @@ Most items below have a GitHub issue home, shown in parentheses; work the issue,
 
 - [ ] **Group input on which skill to pilot first after the Data Analytics seed** - since 06-03-2026
 - [ ] **Evaluator agent feedback on the spec** - since 05-31-2026
+- [ ] **Pick the productivity-suite mechanism** - how the suite loads at session start and how task/changelog updates get triggered; user reviewing wshobson/agents patterns before deciding. Interim: the "Keep the productivity suite current" rule in CLAUDE.md. Since 06-07-2026
 
 ## Review follow-ups (from 05-31-2026 repo review, design calls)
 
@@ -28,6 +29,7 @@ All three resolved 06-03-2026. See the "Decided" block in CHANGELOG.md.
 
 ## Done
 
+- [x] ~~Adopt the vertical-slice build methodology and an interim bookkeeping rule~~ (06-07-2026) - recorded "thin vertical slice first" in CLAUDE.md and the project dossier: prove one skill all the way up (author, `/validate`, `/build`, render check) before widening. Added the "Keep the productivity suite current" interim rule. The mechanism for both is still open, tracked under Waiting On.
 - [x] ~~Reconcile assistant session logs for missing skills~~ (06-06-2026) - issue #14 closed completed when PR #15 merged the first five repo-native skills (build, validate, new-entry commands and tax-ops domain knowledge). Re-open a tracking issue if later sessions surface more unshipped assets.
 - [x] ~~Issue and PR triage~~ (06-06-2026) - closed the two resolved design-call issues (#3, #4), the duplicate missing-skills issue (#16, dup of #14), the superseded frontend mega-plan (#8, Track A core shipped in #9), the conflicting memory-sync PR (#12), and the duplicate-issue PR (#17). Opened #18 to #22 for the remaining frontend, desk-fit, and source-harvest work. PR #7 (period-close workflow) and PR #15 (five missing skills) were ready at triage time and have since merged to `main`.
 - [x] ~~Resolve the three 05-31 review design calls~~ (06-03-2026) - workflow stage handling (resolved on main by PR #9's Type-axis "Workflows" filter; `stage` is now required, removing the orphaned `data-stage` value), research-inventory criterion (tier now reads from source/maturity, no external file), exemplar terminal form (bracketed inserts are the intended end state, documented in the spec). Bracketed-insert fill task closed by that last call.

@@ -24,6 +24,9 @@ The repo root, initialized from `gs_projectfiles`. Shape:
 ## How it works
 Three layers: content (YAML), template (HTML, written once), build (a Python loop that injects content into the template). Output tokens go to asset bodies; the script generates the repetitive markup. Edit one small YAML file and re-run. The template is never re-emitted by hand.
 
+## Build methodology: vertical slice first
+The working unit is a thin vertical slice, not a wide layer. Build one skill all the way up before adding a second: author the YAML entry, run `/validate`, run `/build`, then open `dist/skills-library.html` and confirm the entry renders correctly and presents well. Only once that slice is clean do we widen the library, adding entries and rebuilding with a render check each pass. The same rule governs cross-cutting work: a schema, build, or template change rides through one entry end to end before it touches the rest. Why this order holds: a broad pack that has never compiled hides its failures until late, and a render that reads wrong is cheapest to catch on a single card. The payoff is a repo that is demonstrably working at every step, presentable to the group from minute one. The 14 entries already shipped were authored before this rule; it governs the next pack, the frontend v2 map, and any schema change from here.
+
 ## What the build enforces
 Four hard rules, all script-checked: every required schema field present per type; `core_function` names no tool; `domain_gap` present and substantive for every finance asset; any workflow with a remediation step carries a human-sign-off gate. An offline check aborts the build if the output references anything external. Navigation is by workflow stage (intake-classify, research, remediate, communicate). Tier 1 to 4 is a tag and a filter, not the grouping axis.
 
