@@ -21,6 +21,9 @@ Reconciliation, exception research and handling, cost-basis and transaction anal
 ## Core principle
 The question is never which tools we have, but what exists that works. Three tests for any asset: understand it, decompose it to its core function and rebuild it, adapt it to the domain now. Treat credible repos as specifications, not software: harvest the decomposition, drop code that will not run, re-express the rest as prompts the available assistant runs. The edge is the domain knowledge poured into the gap the repo cannot fill.
 
+## Build methodology: thin vertical slice first
+Prove one asset all the way up before going wide. From the first five minutes, take a single skill through the whole stack: author the entry, run `/validate`, run `/build`, then open `dist/skills-library.html` and confirm it renders and presents well. A working slice of one beats a broad pack that has never compiled. Widen only after the slice holds, adding entries and rebuilding with a render check each pass. A change that spans the stack (schema, build, or template) rides through one entry end to end before it touches the rest. Full rationale in `memory/projects/skills-library.md`.
+
 ## Domain terminology
 Break: a reconciliation discrepancy to research and resolve. Tie-out: reconcile a statement against an authoritative source. Cost basis: original asset value for tax gain and loss. Remediation path: UI, XML, SQL, or plugin. 1099-DIV/B/INT, 1042-S, FATCA, CRS: the reporting forms and regimes. Full definitions live in `memory/glossary.md`. Full break taxonomy, routing rules, and tax-form mappings live in the domain skill below.
 
@@ -45,6 +48,9 @@ The slash commands wrap the script. The script is the source of truth, so either
 - `/build` or `python build/build.py` — validate, compile, run the offline check, write `dist/skills-library.html`. A failed offline check aborts before any file is written.
 - `/new-entry <slug> "<name>"` — scaffold a content entry with every schema field pre-filled.
 - `python -m pytest` — run the validator contract tests. Install deps first with `pip install -r requirements-dev.txt`.
+
+## Keep the productivity suite current
+Whenever you change code, a document, or the environment, move the bookkeeping in the same pass, before push: TASKS.md shows what is now active, waiting, or done, and CHANGELOG.md gets a line under `[Unreleased]`. The same trigger drives both files; a doc-only or environment-only change still earns a changelog line. This is the interim rule while a better mechanism is chosen against the wshobson/agents patterns; it is guidance the assistant follows, not an enforced hook.
 
 ## Adding or changing an entry
 1. Scaffold with `/new-entry`, or copy the exemplar.

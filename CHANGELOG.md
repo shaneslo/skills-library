@@ -23,6 +23,15 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   no longer pins the repo to an absolute path.
 
 ### Added
+- Build methodology recorded as a standing rule: thin vertical slice first. Prove
+  one skill all the way up (author, `/validate`, `/build`, render check on
+  `dist/skills-library.html`) before widening the library. Short form in CLAUDE.md,
+  full rationale in `memory/projects/skills-library.md`.
+- Interim bookkeeping rule in CLAUDE.md ("Keep the productivity suite current"):
+  when code, a document, or the environment changes, TASKS.md and CHANGELOG.md move
+  in the same pass, before push. Stands in until a mechanism is chosen.
+- `mocks/skills-library-linear.html`: standalone Linear-style interface mock
+  (PR #24, merged 06-06). Backfilled here; it landed without a changelog entry.
 - `content/entries/period-close-reconciliation-workflow.yaml`: a period-close
   tie-out runbook. It chains existing single-task assets (data-quality profiler,
   GL reconciler break triage, metric-movement diagnostics, KPI readout) into one
