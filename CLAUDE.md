@@ -50,7 +50,7 @@ The slash commands wrap the script. The script is the source of truth, so either
 - `python -m pytest` — run the validator contract tests. Install deps first with `pip install -r requirements-dev.txt`.
 
 ## Keep the productivity suite current
-Whenever you change code, a document, or the environment, move the bookkeeping in the same pass, before push. TASKS.md shows what is now active, waiting, or done. CHANGELOG.md gets a line under `[Unreleased]` for any code or content change. This is the interim rule while a better mechanism is chosen against the wshobson/agents patterns; it is guidance the assistant follows, not an enforced hook.
+Whenever you change code, a document, or the environment, move the bookkeeping in the same pass, before push: TASKS.md shows what is now active, waiting, or done, and CHANGELOG.md gets a line under `[Unreleased]`. The same trigger drives both files; a doc-only or environment-only change still earns a changelog line. This is the interim rule while a better mechanism is chosen against the wshobson/agents patterns; it is guidance the assistant follows, not an enforced hook.
 
 ## Adding or changing an entry
 1. Scaffold with `/new-entry`, or copy the exemplar.
