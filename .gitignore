@@ -25,6 +25,7 @@ Thumbs.db
 .agents/
 .codex/
 AGENTS.md
+.claude/worktrees/
 
 # Secrets and local environment
 .env*
