@@ -7,7 +7,6 @@ Most items below have a GitHub issue home, shown in parentheses; work the issue,
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
 - [ ] **Desk-fit review of the content packs** (#21) - Data Analytics and Gainskeeper packs against the real operating cadence; hold every entry to the `gl-reconciler-break-triage` exemplar
 - [ ] **Decide and harvest the next source family** (#22) - GitHub agent patterns, financial-services examples, or document-review workflows
-- [ ] **Finish Track A card polish** (#18) - square `aspect-ratio` cards and the stage-count hero summary never landed; the Track A core shipped in PR #9
 - [ ] **Frontend v2 workflow map** (#19) - inline-SVG read-only map for `tax-break-diagnostic-workflow`
 
 ## Waiting On
@@ -29,6 +28,7 @@ All three resolved 06-03-2026. See the "Decided" block in CHANGELOG.md.
 
 ## Done
 
+- [x] ~~Finish Track A card polish~~ (06-13-2026) - issue #18. Square `aspect-ratio:1/1` cards, three-up at 1280px (`min-width:1024px` grid) with the single-column mobile fallback, a `stage_count(entries)` helper feeding the hero summary off stages actually present, and `aria-live` on the copy buttons. The two pre-existing offline regression tests confirmed; added a `stage_count` test and external-`src`/`@import` chrome cases. Verified at 1280px (3 square cards per row) and 390px (single column) plus the dialog a11y checklist (focus enters, Escape closes, focus returns).
 - [x] ~~Adopt the vertical-slice build methodology and an interim bookkeeping rule~~ (06-07-2026) - recorded "thin vertical slice first" in CLAUDE.md and the project dossier: prove one skill all the way up (author, `/validate`, `/build`, render check) before widening. Added the "Keep the productivity suite current" interim rule. The mechanism for both is still open, tracked under Waiting On.
 - [x] ~~Reconcile assistant session logs for missing skills~~ (06-06-2026) - issue #14 closed completed when PR #15 merged the first five repo-native skills (build, validate, new-entry commands and tax-ops domain knowledge). Re-open a tracking issue if later sessions surface more unshipped assets.
 - [x] ~~Issue and PR triage~~ (06-06-2026) - closed the two resolved design-call issues (#3, #4), the duplicate missing-skills issue (#16, dup of #14), the superseded frontend mega-plan (#8, Track A core shipped in #9), the conflicting memory-sync PR (#12), and the duplicate-issue PR (#17). Opened #18 to #22 for the remaining frontend, desk-fit, and source-harvest work. PR #7 (period-close workflow) and PR #15 (five missing skills) were ready at triage time and have since merged to `main`.
