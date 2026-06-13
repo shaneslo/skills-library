@@ -75,4 +75,6 @@ Banned vocabulary: leverage, utilize, robust, seamless, streamline, empower, fos
 
 Banned transitions: Moreover, Furthermore, Additionally, Notably, Importantly, It is worth noting that.
 
+Banned constructions: the single-caveat reveal, where one item gets teed up as specially significant. No "one X remains, and it's the Y", no "one X, and it's the Y", no "this one's load-bearing", no "the load-bearing X". Drop the faux-candor framing ("one honest thing", "to be honest, the real issue is"). State the point plainly without the buildup. The word "load-bearing" as a descriptor is banned.
+
 Honor these in every non-code string: skill bodies, domain-gap notes, comments, prompt text, setup instructions. Code is exempt.
