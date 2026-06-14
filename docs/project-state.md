@@ -39,7 +39,7 @@ CLAUDE.md "Where things live" predates four directories now in the tree:
 
 ## Plugin tree does not mirror all 20 entries
 
-The marketplace carries 14 of the 20 entries as native assets:
+The marketplace carries 18 of the 20 entries as native assets:
 
 - `gainskeeper-operations`: 7 skills plus 1 agent (`gainskeeper-exception-research-agent`)
 - `tax-data-analytics`: 5 skills plus 1 command (`tax-break-diagnostic-workflow`)
