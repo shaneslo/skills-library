@@ -4,6 +4,7 @@
 
 Most items below have a GitHub issue home, shown in parentheses; work the issue, then check it off here. The spec review is an evaluator-agent process task with no code issue.
 
+- [ ] **Clear the documentation drift in `docs/project-state.md`** - CLAUDE.md and `memory/projects/skills-library.md` still describe a 14-entry, single-source repo; the tree holds 20 entries plus a plugin marketplace. Update the entry count and "Where things live", refresh the dossier, home `period-close-reconciliation-workflow` and `build-pipeline-knowledge` in the plugin tree, resolve the helper-command classification clash, and reconcile the marketplace name with the repo slug.
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
 - [ ] **Desk-fit review of the content packs** (#21) - Data Analytics and Gainskeeper packs against the real operating cadence; hold every entry to the `gl-reconciler-break-triage` exemplar
 - [ ] **Decide and harvest the next source family** (#22) - GitHub agent patterns, financial-services examples, or document-review workflows
