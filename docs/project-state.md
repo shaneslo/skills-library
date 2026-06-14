@@ -73,3 +73,16 @@ Capture only; nothing below is changed in this pass.
 3. Decide the home for `period-close-reconciliation-workflow` and `build-pipeline-knowledge` in the plugin tree, or document why they stay YAML-only.
 4. Resolve the helper-command classification: either retire the `claude-*-command` catalog entries or amend the authoring doc.
 5. Reconcile the marketplace `name` with the repo slug before publishing.
+
+## Open design decision: build output has no reviewable home
+
+`dist/` is gitignored and the build runs in an ephemeral container. When an agent builds, the output lives only in that container and is gone when it is reclaimed. A reviewer on GitHub sees nothing, and a test or validation run leaves no durable artifact. The repo assumes the person who builds also opens the file locally, which does not hold when the builder is an agent and the reviewer reviews through the PR.
+
+Candidate mechanisms:
+
+- A. Force-add the built HTML to the PR branch on each push. Reviewers open it on GitHub. Cost: a large generated file in git, merge noise, and drift risk against source.
+- B. CI builds and publishes to GitHub Pages or attaches the HTML as a PR artifact, posting a link. Keeps git clean. Cost: CI setup and a hosting surface.
+- C. Keep it gitignored; the agent sends `dist/skills-library.html` and screenshots directly each build. Cost: no canonical hosted view, depends on the agent channel.
+- D. Commit the output only on tagged releases. Cost: no per-PR preview.
+
+Decision needed before the next build hand-off. Interim: the agent sends the file and screenshots, and can force-add on request.

@@ -16,6 +16,7 @@ Most items below have a GitHub issue home, shown in parentheses; work the issue,
 - [ ] **Group input on which skill to pilot first after the Data Analytics seed** - since 06-03-2026
 - [ ] **Evaluator agent feedback on the spec** - since 05-31-2026
 - [ ] **Pick the productivity-suite mechanism** - how the suite loads at session start and how task/changelog updates get triggered; user reviewing wshobson/agents patterns before deciding. Interim: the "Keep the productivity suite current" rule in CLAUDE.md. Since 06-07-2026
+- [ ] **DESIGN DECISION: how the build output reaches a reviewer** - since 06-14-2026. `dist/` is gitignored and the build runs in an ephemeral container, so an agent build leaves no artifact a GitHub reviewer can open, and tests/validation produce no durable output either. The builder-also-opens-it-locally assumption breaks when the builder is an agent and the reviewer is on GitHub. Candidate mechanisms: (A) force-add the built HTML to the PR branch on each push, (B) CI builds and publishes to GitHub Pages or as a PR artifact with a link, (C) keep it gitignored and rely on the agent sending the file plus screenshots, (D) commit only on tagged releases. Decision needed before the next build hand-off. Interim: the agent sends `dist/skills-library.html` and screenshots directly, and can force-add on request.
 
 ## Review follow-ups (from 05-31-2026 repo review, design calls)
 
