@@ -4,6 +4,16 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
 
 ## [Unreleased]
 
+### Changed
+- Content harvest: moved the generic writing-skill candidates (`content-strategy`,
+  `copywriting`, `deep-write`) out of the live `content/entries/` build source
+  and into `content/harvest/writing-skills/` with a recommendation note for
+  later tax-ops adaptation. This preserves the source packs while keeping the
+  flat YAML catalog clear.
+- Domain taxonomy: mirrored the GL Reconciler cause-taxonomy expansion into the
+  plugin shared domain skill and the exported GL Reconciler skill metadata, so
+  the legacy catalog and plugin marketplace stay aligned.
+
 ### Fixed
 - Validation: remediation detection in workflows now scans each step's `output`,
   not just `title` and `prompt`. A remediation described only in the output no

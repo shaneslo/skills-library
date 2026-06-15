@@ -11,6 +11,8 @@ This is the domain content that turns a generic skill into a role-specific one. 
 
 A break is a reconciliation discrepancy between the client back-office transaction log and an authoritative reference (custodian, depository, the tax engine, or a client statement). Classify every break into one category before proposing a fix. When the cause is unclear, mark it unclassified rather than guess.
 
+Use one primary cause. Add a secondary cause only when it changes the remediation path. If the analyst corrects the classification, record the original cause, corrected cause, evidence, and final value. Repeated corrections are the signal for improving this taxonomy.
+
 **1. Timing and settlement-date straddle.** A transaction lands in different periods across the two sources because trade date and settle date fall on opposite sides of a cutoff. Signature: the same trade appears in both with different dates, or in one period and not the other. Origin: T versus T+1 or T+2 conventions, period-end cutoff, feed lag.
 
 **2. Quantity and share mismatch.** Share or par amounts differ on otherwise matched records. Signature: same instrument and date, different quantity. Origin: partial fills aggregated differently, a corporate-action share adjustment posted to one source only, fractional-share handling.
@@ -31,7 +33,13 @@ A break is a reconciliation discrepancy between the client back-office transacti
 
 **10. Identifier and security-master mismatch.** The same security carries different identifiers across sources. Signature: economic terms match, CUSIP, ISIN, or SEDOL differ. Origin: a stale security master, an identifier change after a corporate action, a vendor mapping gap.
 
-**11. Reclass and amendment.** A post-period issuer reclassification changes prior reporting. Signature: a prior-period figure moves after close. Origin: an issuer reclass (common for RICs and REITs), a late corrected income statement, an amended tax document. This is corrected-form territory; assume a 1099 correction may follow.
+**11. Reclass, amendment, or prior-period carryover.** A post-period issuer reclassification changes prior reporting, or the current break is explained by a prior correction. Signature: a prior-period figure moves after close, or the same unresolved discrepancy carries forward. Origin: an issuer reclass (common for RICs and REITs), a late corrected income statement, an amended tax document, or carryforward from an earlier unresolved break. This is corrected-form territory; assume a 1099 correction may follow.
+
+**12. Source parsing and extraction error.** A value was read incorrectly from a log, statement, tax engine output, or screenshot. Signature: the authoritative source shows one value, but the normalized table carries another. Origin: OCR error, column shift, sign convention, split description field, truncated export, or inferred value treated as source fact.
+
+**13. Tax reporting mapping error.** The source value is right, but the reporting destination is wrong. Signature: income type, recipient classification, form, box, income code, chapter, exemption code, or withholding treatment does not match the account facts. Origin: wrong income-type-to-form mapping, stale recipient classification, missing treaty basis, or form logic applied to the wrong account regime.
+
+**14. Workflow coverage gap or analyst judgment call.** The records tie mechanically, but the treatment depends on a policy call or no approved path covers the case. Signature: documentation quality, materiality, client communication risk, correction threshold, or desk convention determines the answer. Origin: edge case, absent procedure, conflicting guidance, or judgment reserved to the analyst.
 
 ## Remediation routing rules
 
