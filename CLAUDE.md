@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-Guidance for Claude Code in this repo. The project files are the source of truth. Read them before acting. The move to Claude Code is settled; do not re-open it.
+Canonical agent contract for this repo. The project files are the source of truth. Read them before acting.
+
+This is a dual-agent repo. Codex harvests and adapts content (most `content/entries/*.yaml` were decomposed from first-party OpenAI plugin skills and re-expressed as tool-agnostic prose). Claude Code owns the build pipeline, scaffolding, tests, and frontend. Both agents share `.claude/skills/` and `memory/`. Neither tool is the sole agent; do not strip the other's work. `AGENTS.md` carries the Codex-facing deltas and defers here for the full contract.
 
 ## What this repo is
 A copy-and-adapt library of AI assets (prompts, skills, agents, workflows) for Goldman Sachs prime brokerage tax-reporting operations. Content is tool-agnostic and compiles to one offline HTML file. The execution layer can change without rewriting content.
