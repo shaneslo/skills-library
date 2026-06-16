@@ -23,6 +23,19 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   no longer pins the repo to an absolute path.
 
 ### Added
+- `build/serve.py`: builds the catalog then serves `dist/` over HTTP for local
+  review (`python build/serve.py`, `--port`, `--no-build`). Convenience only; the
+  page still loads nothing external.
+- `build/screenshot.mjs` and `docs/screenshots/`: Playwright capture of the
+  rendered catalog (top, full page, and an open entry dialog) for review without
+  running the build. Uses the environment's cached chromium via `CHROME_BIN` or
+  the default Playwright path.
+- `docs/project-state.md`: a 2026-06-14 snapshot reconciling what the repo holds
+  against what CLAUDE.md and the dossier claim. Flags the 14-to-20 entry drift, the
+  coexisting YAML and plugin-marketplace layouts, four top-level directories CLAUDE.md
+  omits, two content entries with no plugin home, and the helper-command
+  classification clash between `docs/authoring-plugins.md` and the `claude-*-command`
+  catalog entries. Recommendations only; no source files changed.
 - Build methodology recorded as a standing rule: thin vertical slice first. Prove
   one skill all the way up (author, `/validate`, `/build`, render check on
   `dist/skills-library.html`) before widening the library. Short form in CLAUDE.md,

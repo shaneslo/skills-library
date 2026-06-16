@@ -4,6 +4,7 @@
 
 Most items below have a GitHub issue home, shown in parentheses; work the issue, then check it off here. The spec review is an evaluator-agent process task with no code issue.
 
+- [ ] **Clear the documentation drift in `docs/project-state.md`** - CLAUDE.md and `memory/projects/skills-library.md` still describe a 14-entry, single-source repo; the tree holds 20 entries plus a plugin marketplace. Update the entry count and "Where things live", refresh the dossier, home `period-close-reconciliation-workflow` and `build-pipeline-knowledge` in the plugin tree, resolve the helper-command classification clash, and reconcile the marketplace name with the repo slug.
 - [ ] **Get the Skills Library spec reviewed by the evaluator agent** - hand off `SKILLS_LIBRARY_SPEC.md`; incorporate feedback before build
 - [ ] **Desk-fit review of the content packs** (#21) - Data Analytics and Gainskeeper packs against the real operating cadence; hold every entry to the `gl-reconciler-break-triage` exemplar
 - [ ] **Decide and harvest the next source family** (#22) - GitHub agent patterns, financial-services examples, or document-review workflows
@@ -15,6 +16,7 @@ Most items below have a GitHub issue home, shown in parentheses; work the issue,
 - [ ] **Group input on which skill to pilot first after the Data Analytics seed** - since 06-03-2026
 - [ ] **Evaluator agent feedback on the spec** - since 05-31-2026
 - [ ] **Pick the productivity-suite mechanism** - how the suite loads at session start and how task/changelog updates get triggered; user reviewing wshobson/agents patterns before deciding. Interim: the "Keep the productivity suite current" rule in CLAUDE.md. Since 06-07-2026
+- [ ] **DESIGN DECISION: how the build output reaches a reviewer** - since 06-14-2026. `dist/` is gitignored and the build runs in an ephemeral container, so an agent build leaves no artifact a GitHub reviewer can open, and tests/validation produce no durable output either. The builder-also-opens-it-locally assumption breaks when the builder is an agent and the reviewer is on GitHub. Candidate mechanisms: (A) force-add the built HTML to the PR branch on each push, (B) CI builds and publishes to GitHub Pages or as a PR artifact with a link, (C) keep it gitignored and rely on the agent sending the file plus screenshots, (D) commit only on tagged releases. Decision needed before the next build hand-off. Interim: the agent sends `dist/skills-library.html` and screenshots directly, and can force-add on request.
 
 ## Review follow-ups (from 05-31-2026 repo review, design calls)
 
