@@ -4,6 +4,23 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
 
 ## [Unreleased]
 
+### Changed
+- Agent contracts: reconciled `CLAUDE.md` and `AGENTS.md` to the dual-agent
+  reality. Both files claimed their own tool was the settled, sole agent;
+  Codex harvests content while Claude Code owns the build, scaffold, and
+  frontend, sharing `.claude/skills/` and `memory/`. `CLAUDE.md` is now the
+  canonical contract; `AGENTS.md` is the Codex-facing companion and is tracked
+  (removed from `.gitignore`). Fixed the broken `.Codex/skills/` pointer in
+  `AGENTS.md` to the real shared `.claude/skills/` path.
+- Content harvest: moved the generic writing-skill candidates (`content-strategy`,
+  `copywriting`, `deep-write`) out of the live `content/entries/` build source
+  and into `content/harvest/writing-skills/` with a recommendation note for
+  later tax-ops adaptation. This preserves the source packs while keeping the
+  flat YAML catalog clear.
+- Domain taxonomy: mirrored the GL Reconciler cause-taxonomy expansion into the
+  plugin shared domain skill and the exported GL Reconciler skill metadata, so
+  the legacy catalog and plugin marketplace stay aligned.
+
 ### Fixed
 - Validation: remediation detection in workflows now scans each step's `output`,
   not just `title` and `prompt`. A remediation described only in the output no

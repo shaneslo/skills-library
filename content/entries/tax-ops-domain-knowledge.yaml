@@ -34,7 +34,7 @@ body: |
   before proposing a fix. When the cause is unclear, mark it unclassified
   rather than guess.
 
-  [INSERT: 11 break categories with signatures and origins]
+  [INSERT: 14 break categories with signatures and origins]
 
   ## Remediation routing rules
 
@@ -110,7 +110,7 @@ body: |
   The same skill with the firm's break taxonomy, routing rules, and form
   mappings inside it is defensible and specific to the desk.
 domain_gap: >
-  The bracketed inserts in the body hold the full text of the 11 break
+  The bracketed inserts in the body hold the full text of the 14 break
   categories, the routing table, the form-mapping table, and the account
   classification rules. These are the firm-specific elements that must be
   supplied from the desk's actual operating procedures, the current-year IRS
