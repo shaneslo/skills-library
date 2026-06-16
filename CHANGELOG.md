@@ -4,6 +4,23 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
 
 ## [Unreleased]
 
+### Changed
+- Agent contracts: reconciled `CLAUDE.md` and `AGENTS.md` to the dual-agent
+  reality. Both files claimed their own tool was the settled, sole agent;
+  Codex harvests content while Claude Code owns the build, scaffold, and
+  frontend, sharing `.claude/skills/` and `memory/`. `CLAUDE.md` is now the
+  canonical contract; `AGENTS.md` is the Codex-facing companion and is tracked
+  (removed from `.gitignore`). Fixed the broken `.Codex/skills/` pointer in
+  `AGENTS.md` to the real shared `.claude/skills/` path.
+- Content harvest: moved the generic writing-skill candidates (`content-strategy`,
+  `copywriting`, `deep-write`) out of the live `content/entries/` build source
+  and into `content/harvest/writing-skills/` with a recommendation note for
+  later tax-ops adaptation. This preserves the source packs while keeping the
+  flat YAML catalog clear.
+- Domain taxonomy: mirrored the GL Reconciler cause-taxonomy expansion into the
+  plugin shared domain skill and the exported GL Reconciler skill metadata, so
+  the legacy catalog and plugin marketplace stay aligned.
+
 ### Fixed
 - Validation: remediation detection in workflows now scans each step's `output`,
   not just `title` and `prompt`. A remediation described only in the output no
@@ -32,6 +49,19 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   Tests: a `stage_count` unit test plus offline regression cases for external `src`
   and `@import` in the page chrome. (`build/build.py`, `build/template.html`,
   `tests/test_validate.py`)
+- `build/serve.py`: builds the catalog then serves `dist/` over HTTP for local
+  review (`python build/serve.py`, `--port`, `--no-build`). Convenience only; the
+  page still loads nothing external.
+- `build/screenshot.mjs` and `docs/screenshots/`: Playwright capture of the
+  rendered catalog (top, full page, and an open entry dialog) for review without
+  running the build. Uses the environment's cached chromium via `CHROME_BIN` or
+  the default Playwright path.
+- `docs/project-state.md`: a 2026-06-14 snapshot reconciling what the repo holds
+  against what CLAUDE.md and the dossier claim. Flags the 14-to-20 entry drift, the
+  coexisting YAML and plugin-marketplace layouts, four top-level directories CLAUDE.md
+  omits, two content entries with no plugin home, and the helper-command
+  classification clash between `docs/authoring-plugins.md` and the `claude-*-command`
+  catalog entries. Recommendations only; no source files changed.
 - Build methodology recorded as a standing rule: thin vertical slice first. Prove
   one skill all the way up (author, `/validate`, `/build`, render check on
   `dist/skills-library.html`) before widening the library. Short form in CLAUDE.md,

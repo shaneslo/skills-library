@@ -32,7 +32,7 @@ Four hard rules, all script-checked: every required schema field present per typ
 
 ## Open items
 - Review the 14-entry pack for desk fit. Confirm whether the asset names, fields, and issue types match the real Gainskeeper operating cadence.
-- Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the taxonomy, routing rules, and form mappings directly.
+- Decide whether bracketed inserts remain reusable or terminal-form siblings should embed the routing rules and form mappings directly. The GL Reconciler exemplar now embeds the first real cause-taxonomy insert, based on the tax-agent correction-loop research note and the shared tax-ops domain skill.
 - Reconstruct or commit the missing research inventory if tier tags need audit support beyond the source notes in each entry.
 - Tax figures in `tax-ops-domain.md` (24% backup withholding, 30% NRA default, 1099-DIV box numbers, 1042-S income codes 06/01/51) are as of training. Confirm against current-year IRS instructions each filing season.
 - GL Reconciler maturity stats (roughly 29k stars, 4.1k forks, 2026-05-05 release) came from the research pass and were not re-verified. Spot-check before the library goes wider than you.
@@ -41,6 +41,8 @@ Four hard rules, all script-checked: every required schema field present per typ
 Research report artifact: credibility-tier-ranked inventory across four tiers (Anthropic financial-services repo, Microsoft 365 Copilot Finance, Atlassian Rovo, ServiceNow, wshobson/agents, OpenAI Academy, Nate B. Jones). Inventory holds names, one-liners, sources, fit notes. Most full runnable bodies must be authored, not copied.
 
 The checked-in project currently references that inventory only in this dossier. The itemized inventory file was not found in the repo during the 2026-06-03 initialization pass.
+
+`content/harvest/writing-skills/` holds three generic writing source packs: `content-strategy`, `copywriting`, and `deep-write`. Treat them as candidate source material for SLO-76 or a later source-family pass. They should become entries or plugin assets only after a tax-ops use case passes the three-test framework.
 
 ## Versioning roadmap
 - v1: tool-agnostic content. Runs on whatever assistant is in hand, including the GS internal assistant and Copilot.
