@@ -14,17 +14,6 @@ A copy-and-adapt marketplace of AI assets for Goldman Sachs prime-brokerage tax-
 - [docs/architecture.md](docs/architecture.md) — the marketplace layout and how it maps from the old content model.
 - [docs/authoring-plugins.md](docs/authoring-plugins.md) — how to add a skill, agent, or command, with the frontmatter contract.
 
-## Install via Claude Code
-
-Add the marketplace, then install the plugins you want.
-
-```
-/plugin marketplace add shaneslo/skills-library
-/plugin install gainskeeper-operations
-/plugin install tax-data-analytics
-/plugin install tax-ops-shared
-```
-
 ## Build the offline catalog
 
 The offline HTML build still reads `content/entries/` until the follow-up re-point lands. Install the dev dependencies, validate, then build.
