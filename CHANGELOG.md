@@ -4,6 +4,20 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
 
 ## [Unreleased]
 
+### Added
+- Content: adapted the three harvested writing skills into on-domain tax-ops
+  entries (SLO-105). `client-communication-drafter` (from copywriting),
+  `desk-kb-content-planner` (from content-strategy), and
+  `iterative-tax-memo-writer` (from deep-write) are `communicate`-stage skills
+  that pass validation; the catalog now builds 23 entries. Added
+  `content/harvest/README.md` to make the build's harvest exclusion explicit and
+  record the source-to-entry mapping.
+- Docs: added `docs/retrieval-guidance.md` (SLO-102, SLO-109), verifying the
+  M365 Copilot and SharePoint-agent grounding claims against current Microsoft
+  documentation with citations. Four of five claims confirmed; the "restate
+  tables as bullets" advice is not documented by Microsoft and is flagged as an
+  internal heuristic, not vendor guidance.
+
 ### Changed
 - Agent contracts: reconciled `CLAUDE.md` and `AGENTS.md` to the dual-agent
   reality. Both files claimed their own tool was the settled, sole agent;
@@ -22,6 +36,13 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   the legacy catalog and plugin marketplace stay aligned.
 
 ### Fixed
+- Domain reference: corrected two IRS mappings in `.claude/skills/tax-ops-domain.md`
+  and the mirrored `plugins/tax-ops-shared/skills/tax-ops-domain/SKILL.md`,
+  verified 2026-06-18 against current IRS instructions. Substitute payments in
+  lieu of dividends move from "other income" to 1099-MISC Box 8 (Instructions
+  for Forms 1099-MISC and 1099-NEC, Rev. 04/2025). 1042-S "other income"
+  corrected from code 51 to code 23; code 51 is interest on certain actively
+  traded or publicly offered securities (2026 Instructions for Form 1042-S).
 - Validation: remediation detection in workflows now scans each step's `output`,
   not just `title` and `prompt`. A remediation described only in the output no
   longer slips past the human-sign-off-gate rule. (`build/build.py`)
