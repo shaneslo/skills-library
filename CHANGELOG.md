@@ -61,6 +61,15 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
   no longer pins the repo to an absolute path.
 
 ### Added
+- Track A card polish (issue #18): desktop cards are square (`aspect-ratio:1/1`) and
+  render three per row at 1280px via a `min-width:1024px` grid; mobile keeps the
+  single-column, content-height fallback (`aspect-ratio:auto`). A new
+  `stage_count(entries)` helper drives the `<!--STAGE_COUNT-->` hero substitution
+  off stages actually present in the content instead of the hardcoded schema count.
+  Copy buttons carry `aria-live="polite"` so the "Copied" status is announced.
+  Tests: a `stage_count` unit test plus offline regression cases for external `src`
+  and `@import` in the page chrome. (`build/build.py`, `build/template.html`,
+  `tests/test_validate.py`)
 - `build/serve.py`: builds the catalog then serves `dist/` over HTTP for local
   review (`python build/serve.py`, `--port`, `--no-build`). Convenience only; the
   page still loads nothing external.
