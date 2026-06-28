@@ -30,6 +30,7 @@ All three resolved 06-03-2026. See the "Decided" block in CHANGELOG.md.
 
 ## Done
 
+- [x] ~~Resolve GitGuardian Bearer Token flag~~ (2026-06-27) - investigated and confirmed non-issue: repo is a fork of external code, token was never live and never introduced by Shane. Recorded in `memory/resolved-flags.md`; future diff runs will suppress this flag.
 - [x] ~~Adapt the harvested writing skills to tax-ops~~ (SLO-105, 06-18-2026) - decomposed `copywriting`, `content-strategy`, and `deep-write` into `client-communication-drafter`, `desk-kb-content-planner`, and `iterative-tax-memo-writer`; build now compiles 23 entries. Added `content/harvest/README.md` to make the build exclusion explicit. On `chore/pre-loop-cleanup`, pending PR.
 - [x] ~~Verify M365 Copilot / SharePoint-agent grounding guidance~~ (SLO-102, SLO-109, 06-18-2026) - verified five build-shaping claims against current Microsoft docs; recorded verdicts and citations in `docs/retrieval-guidance.md`. Four confirmed; the tables-to-bullets advice is undocumented and flagged as an internal heuristic. On `chore/pre-loop-cleanup`, pending PR.
 - [x] ~~Verify and correct the tax-ops domain figures against current IRS instructions~~ (06-18-2026) - confirmed backup withholding 24%, NRA and FATCA 30%, and the 1099-DIV boxes; corrected substitute payments to 1099-MISC Box 8 and 1042-S "other income" to code 23. Citations recorded in the domain reference and CHANGELOG. On `chore/pre-loop-cleanup`, pending PR.
