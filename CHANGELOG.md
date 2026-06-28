@@ -5,6 +5,11 @@ All notable changes to the Skills Library. Newest first. Dates are YYYY-MM-DD.
 ## [Unreleased]
 
 ### Added
+- Memory: created `memory/resolved-flags.md` to record investigated and closed
+  security/monitoring flags. First entry: GitGuardian Bearer Token in the
+  `generative-ai` repo (resolved 2026-06-27, non-issue — forked external repo,
+  never live, never Shane's code). Future diff runs should check this file
+  before surfacing a flag as active.
 - Content: adapted the three harvested writing skills into on-domain tax-ops
   entries (SLO-105). `client-communication-drafter` (from copywriting),
   `desk-kb-content-planner` (from content-strategy), and
